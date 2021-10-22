@@ -39,7 +39,7 @@ declare module '@ioc:Adonis/Addons/Auth' {
       config: LucidProviderConfig<typeof Salesman>
     }
 
-    funcionarios:{
+    account:{
       implementation: LucidProviderContract<typeof Account>
       config: LucidProviderConfig<typeof Account>
 
@@ -75,9 +75,10 @@ declare module '@ioc:Adonis/Addons/Auth' {
       implementation: OATGuardContract<'user', 'api'>
       config: OATGuardConfig<'user'>
     }
-    apiFuncionario:{
-      implementation: OATGuardContract<'funcionarios', 'apiFuncionario'>
-      config: OATGuardConfig<'funcionarios'>
+    
+    apiAccount:{
+      implementation: OATGuardContract<'account', 'apiAccount'>
+      config: OATGuardConfig<'account'>
 
     }
   }

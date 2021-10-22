@@ -18,20 +18,20 @@ const authConfig: AuthConfig = {
         model: () => import('App/Models/Salesman'),
       },
     },
-    apiFuncionario:{
-        driver: 'oat',
-        tokenProvider: {
-          type: 'apiFuncionario',
-          driver: 'database',
-          table: 'api_tokens_funcionarios',
-          foreignKey: 'account_id',
-        },
-        provider: {
-          driver: 'lucid',
-          identifierKey: 'id',
-          uids: ['email'],
-          model: () => import('App/Models/Account'),
-        },
+    api_account:{
+      driver: 'oat',
+      tokenProvider: {
+        type: 'api_account',
+        driver: 'database',
+        table: 'api_tokens_funcionarios',
+        foreignKey: 'account_id',
+      },
+      provider: {
+        driver: 'lucid',
+        identifierKey: 'id',
+        uids: ['email'],
+        model: () => import('App/Models/Account'),
+      },
     },
   },
 }

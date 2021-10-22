@@ -3,8 +3,8 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 export default class AuthController {
   public async login ({ auth, request, response }: HttpContextContract) {
-    const email = request.input('email')
-    const password = request.input('password')
+    
+    const { email, password } = request.body()
 
     try {
       const token = await auth.use('api').attempt(email, password)
@@ -15,14 +15,15 @@ export default class AuthController {
   }
 
   public async loginAccount ({ auth, request, response }: HttpContextContract) {
-    const email = request.input('email')
-    const password = request.input('password')
+    
+    const { email, password } = request.body()
 
     try {
-      const token = await auth.use('apiFuncionario').attempt(email, password)
+      const token = await auth.use('api_account').attempt(email, password)
       return token
-    } catch {
-      return response.badRequest('Invalid credentials')
+    } catch(e) {
+      console.log(e)
+      return response.badRequest('Invalid credentials!')
     }
   }
 }
