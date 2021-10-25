@@ -42,8 +42,10 @@ export default class PvdsController {
         return pvd
       }
 
-      public async destroy ({ params }: HttpContextContract) {
+      public async destroy ({ params, response }: HttpContextContract) {
         const findpvd = await Pvd.find(params.id)
+        if(!findpvd)
+          return response.status(404);
         await findpvd.delete()
       }
       public async update ({ request, params }: HttpContextContract) {

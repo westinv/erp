@@ -18,7 +18,7 @@ const authConfig: AuthConfig = {
         model: () => import('App/Models/Salesman'),
       },
     },
-    api_account:{
+    apiAccount:{
       driver: 'oat',
       tokenProvider: {
         type: 'api_account',

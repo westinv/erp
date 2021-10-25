@@ -37,8 +37,10 @@ export default class PhoneNumbersController {
         return findnumber
       }
     
-      public async destroy ({ params }: HttpContextContract) {
+      public async destroy ({ params,  response }: HttpContextContract) {
         const findnumber = await PhoneNumber.find(params.id)
+        if(!findnumber)
+          return response.status(404);
         await findnumber.delete()
       }
 }

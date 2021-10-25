@@ -47,8 +47,11 @@ export default class AccountsController {
     return findAccount;
   }
 
-  public async destroy({ params }: HttpContextContract) {
+  public async destroy({ params, response }: HttpContextContract) {
     const findAccount = await Account.find(params.id);
+
+    if(!findAccount)
+      return response.status(404);
     await findAccount.delete();
   }
 }

@@ -19,7 +19,7 @@ export default class AuthController {
     const { email, password } = request.body()
 
     try {
-      const token = await auth.use('api_account').attempt(email, password)
+      const token = await auth.use('apiAccount').attempt(email, password)
       return token
     } catch(e) {
       console.log(e)

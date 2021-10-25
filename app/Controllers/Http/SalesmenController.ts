@@ -46,9 +46,10 @@ export default class SalesmenController {
     return findSalesman;
   }
 
-  public async destroy({ params }: HttpContextContract) {
+  public async destroy({ params,  response }: HttpContextContract) {
     const findSalesman = await Salesman.find(params.id);
-
+    if(!findSalesman)
+      return response.status(404);
     await findSalesman.delete();
   }
 }
