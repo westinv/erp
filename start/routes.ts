@@ -1,7 +1,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 
 
-
+Route.get("/", () =>{true})
 Route.post('/salesman', 'SalesmenController.store');
 Route.delete('/salesman/:id', 'SalesmenController.destroy').middleware('auth');
 Route.get('/salesman', 'SalesmenController.index').middleware('auth');
