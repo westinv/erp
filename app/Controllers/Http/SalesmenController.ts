@@ -29,9 +29,9 @@ export default class SalesmenController {
   }
 
   public async show({ params }: HttpContextContract) {
-    const salesmen = await Salesman.find(params.id);
-
-    return salesmen;
+    const salesmen = await Salesman.find(params.id)
+    await salesmen?.load('accounts')
+    return salesmen
   }
 
   public async update({ request, params }: HttpContextContract) {

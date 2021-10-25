@@ -1,8 +1,9 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import Account from 'App/Models/Account';
 
+
 export default class AccountsController {
-  public async store({ request }: HttpContextContract) {
+  public async store({ request, auth }: HttpContextContract) {
     const { email, password, username } = request.only([
       'email',
       'password',
@@ -12,6 +13,7 @@ export default class AccountsController {
       email,
       password,
       username,
+      salesmanId: auth.user?.id
     });
 
     return account;
@@ -19,13 +21,13 @@ export default class AccountsController {
 
   public async index({}: HttpContextContract) {
     const account = await Account.all();
-
+    
     return account;
   }
 
   public async show({ params }: HttpContextContract) {
     const account = await Account.find(params.id);
-
+    await account?.load('salesmen')
     return account;
   }
 
