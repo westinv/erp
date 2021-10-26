@@ -8,9 +8,6 @@ export default class Products extends BaseSchema {
       table.increments('id')
       table.string('description')
 
-      /**
-       * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
-       */
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })

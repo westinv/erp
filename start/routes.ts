@@ -12,6 +12,9 @@ Route.put('/salesman/:id', 'SalesmenController.update').middleware('auth');
 
 Route.resource('/account', 'AccountsController').apiOnly()
 Route.resource('/pvd', 'PvdsController').apiOnly()
+Route.resource('/signaturecleint', 'SignatureClientsController').apiOnly()
+Route.resource('/client', 'ClientsController').apiOnly()
+Route.resource('/product', 'ProductsController').apiOnly()
 
 Route.post('/login', 'AuthController.login')
 Route.post('/loginaccount', 'AuthController.loginAccount')

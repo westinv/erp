@@ -7,7 +7,7 @@ export default class Signatures extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
 
-      table.integer('products_id').unsigned().references('id').inTable('products').onDelete('CASCADE')
+      //table.integer('products_id').unsigned().references('id').inTable('products').onDelete('CASCADE')
 
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
