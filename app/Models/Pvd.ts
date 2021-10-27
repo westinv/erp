@@ -1,7 +1,8 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Account from './Account'
 import Salesman from './Salesman'
+import PhoneNumber from './PhoneNumber'
 
 export default class Pvd extends BaseModel {
   @column({ isPrimary: true })
@@ -9,6 +10,9 @@ export default class Pvd extends BaseModel {
 
   @belongsTo (()=> Account)
   public account: BelongsTo<typeof Account>
+
+  @hasMany(()=> PhoneNumber)
+  public phoneNumber: HasMany<typeof PhoneNumber>
 
   @column()
   public accountId: number

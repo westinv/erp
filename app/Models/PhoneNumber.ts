@@ -1,11 +1,18 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, belongsTo, BelongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import Pvd from './Pvd';
 
 export default class PhoneNumber extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  public phonenumber: string;
+  public phoneNumber: string;
+
+  @belongsTo(() => Pvd)
+  public pvd: BelongsTo<typeof Pvd>
+
+  @column()
+  public pvdId: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

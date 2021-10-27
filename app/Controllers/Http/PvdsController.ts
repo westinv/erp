@@ -31,9 +31,6 @@ export default class PvdsController {
         cep,
         complement,
         reference_point,
-
-
-
     })
 
     return pvd;
