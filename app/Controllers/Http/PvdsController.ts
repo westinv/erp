@@ -1,9 +1,15 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Account from 'App/Models/Account';
 import Pvd from 'App/Models/Pvd'
+import Salesman from 'App/Models/Salesman';
 
 export default class PvdsController {
 
-    public async store ({ request }: HttpContextContract) {
+    public async store ({ response,auth,request }: HttpContextContract) {
+    if(!(auth.user instanceof Salesman) && !(auth.user instanceof Account))
+      return response.status(403);
+
+
     const {name,cnpj,description,address,city,district,cep,complement,reference_point } = request.only([
         'name',
         'cnpj',
@@ -24,7 +30,10 @@ export default class PvdsController {
         district,
         cep,
         complement,
-        reference_point 
+        reference_point,
+
+
+
     })
 
     return pvd;
@@ -32,13 +41,13 @@ export default class PvdsController {
 
     public async index ({}: HttpContextContract) {
         const pvd = await Pvd.all()
-    
+
         return pvd
       }
-    
+
       public async show ({ params }: HttpContextContract) {
         const pvd = await Pvd.find(params.id)
-    
+
         return pvd
       }
 
@@ -65,9 +74,9 @@ export default class PvdsController {
             findpvd.merge(dados)
             await findpvd.save()
           }
-      
+
           return findpvd
 
       }
-      
+
 }

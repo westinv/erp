@@ -9,6 +9,10 @@ export default class Signatures extends BaseSchema {
 
       //table.integer('products_id').unsigned().references('id').inTable('products').onDelete('CASCADE')
 
+      table.string('name')
+      table.string('price')
+      table.string('duration')
+
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })

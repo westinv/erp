@@ -1,9 +1,23 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import Account from './Account'
+import Salesman from './Salesman'
 
 export default class Pvd extends BaseModel {
   @column({ isPrimary: true })
   public id: number
+
+  @belongsTo (()=> Account)
+  public account: BelongsTo<typeof Account>
+
+  @column()
+  public accountId: number
+
+  @belongsTo(() => Salesman)
+  public salesman: BelongsTo<typeof Salesman>
+
+  @column()
+  public salesmanId: number
 
   @column()
   public name: string
@@ -22,7 +36,7 @@ export default class Pvd extends BaseModel {
 
   @column()
   public district: string
-  
+
   @column()
   public cep: string
 
@@ -31,7 +45,7 @@ export default class Pvd extends BaseModel {
 
   @column()
   public reference_point: string
-  
+
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

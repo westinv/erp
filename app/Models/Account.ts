@@ -1,14 +1,18 @@
 import { DateTime } from 'luxon'
-import { BaseModel, beforeSave, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, beforeSave, BelongsTo, belongsTo, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import Hash from '@ioc:Adonis/Core/Hash'
 import Salesman from './Salesman'
+import Pvd from './Pvd'
 export default class Account extends BaseModel {
   @column({ isPrimary: true })
   public id: number
-  
+
   @belongsTo(() => Salesman)
-  public salesmen: BelongsTo<typeof Salesman>
-  
+  public salesman: BelongsTo<typeof Salesman>
+
+  @hasMany(()=> Pvd)
+  public pvds: HasMany<typeof Pvd>
+
   @column()
   public salesmanId: number;
 

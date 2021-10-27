@@ -6,6 +6,15 @@ export default class Signature extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column()
+  public name: string
+
+  @column()
+  public price: string
+
+  @column()
+  public duration: string
+
   @belongsTo(() => Product)
   public product: BelongsTo<typeof Product>
 
