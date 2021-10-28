@@ -3,6 +3,7 @@ import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:
 import Account from './Account'
 import Salesman from './Salesman'
 import PhoneNumber from './PhoneNumber'
+import Signature from './Signature'
 
 export default class Pvd extends BaseModel {
   @column({ isPrimary: true })
@@ -13,6 +14,9 @@ export default class Pvd extends BaseModel {
 
   @hasMany(()=> PhoneNumber)
   public phoneNumber: HasMany<typeof PhoneNumber>
+
+  @hasMany(()=> Signature)
+  public signature: HasMany<typeof Signature>
 
   @column()
   public accountId: number

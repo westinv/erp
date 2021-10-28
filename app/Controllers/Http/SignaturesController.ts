@@ -2,7 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Signature from 'App/Models/Signature';
 
 export default class SignaturesController {
-  public async store({ request }: HttpContextContract) {
+  public async store({ request, auth }: HttpContextContract) {
     const { name, price, duration } = request.only([
       'name',
       'price',
@@ -11,7 +11,8 @@ export default class SignaturesController {
     const signature = await Signature.create({
       name,
       price,
-      duration
+      duration,
+      pvdId: auth.user?.id
     });
 
     return signature;
@@ -25,6 +26,7 @@ export default class SignaturesController {
 
   public async show({ params }: HttpContextContract) {
     const signature = await Signature.find(params.id);
+    await signature?.load('pvd')
 
     return signature;
   }
