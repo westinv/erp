@@ -10,7 +10,9 @@ export default class Pvds extends BaseSchema {
       table.integer('account_id').unsigned().references('id').inTable('accounts').onDelete('CASCADE')
       table.integer('salesman_id').unsigned().references('id').inTable('salesmen').onDelete('CASCADE')
 
-      table.string('name').notNullable()
+      table.string('trade_name').notNullable()
+      table.string('company_name').notNullable()
+      table.string('state').notNullable()
       table.string('cnpj').notNullable()
       table.string('description').notNullable()
       table.string('address').notNullable()

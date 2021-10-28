@@ -17,6 +17,16 @@ export default class Pvd extends BaseModel {
   @column()
   public accountId: number
 
+  @column()
+  public state: string
+
+  @column()
+  public companyName: number
+
+  @column()
+  public tradeName: number
+
+
   @belongsTo(() => Salesman)
   public salesman: BelongsTo<typeof Salesman>
 
@@ -48,7 +58,7 @@ export default class Pvd extends BaseModel {
   public complement: string
 
   @column()
-  public reference_point: string
+  public referencePoint: string
 
 
   @column.dateTime({ autoCreate: true })

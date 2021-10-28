@@ -12,8 +12,8 @@ export default class Salesmen extends BaseSchema {
       table.string('address').notNullable()
       table.string('city').notNullable()
       table.string('district').notNullable()
-      table.string('complements')
-      table.string('email')
+      table.string('complements').notNullable();
+      table.string('email').notNullable().unique()
       table.string('phone').notNullable()
       table.string('username').notNullable().unique()
       table.string('password').notNullable()

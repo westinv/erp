@@ -10,8 +10,10 @@ export default class PvdsController {
       return response.status(403);
 
 
-    const {name,cnpj,description,address,city,district,cep,complement,reference_point } = request.only([
-        'name',
+    const {tradeName,companyName,state,cnpj,description,address,city,district,cep,complement,referencePoint } = request.only([
+        'tradeName',
+        'companyName',
+        'state',
         'cnpj',
         'description',
         'address',
@@ -19,10 +21,12 @@ export default class PvdsController {
         'district',
         'cep',
         'complement',
-        'reference_point'
+        'referencePoint'
     ])
     const pvd = await Pvd.create({
-        name,
+        tradeName,
+        companyName,
+        state,
         cnpj,
         description,
         address,
@@ -30,7 +34,7 @@ export default class PvdsController {
         district,
         cep,
         complement,
-        reference_point,
+        referencePoint,
     })
 
     return pvd;
@@ -57,7 +61,9 @@ export default class PvdsController {
       public async update ({ request, params }: HttpContextContract) {
         const findpvd = await Pvd.find(params.id)
         const dados = request.only([
-            'name',
+            'tradeName',
+            'companyName',
+            'state',
             'cnpj',
             'description',
             'address',
@@ -65,7 +71,7 @@ export default class PvdsController {
             'district',
             'cep',
             'complement',
-            'reference_point'
+            'referencePoint'
         ])
         if (findpvd) {
             findpvd.merge(dados)
