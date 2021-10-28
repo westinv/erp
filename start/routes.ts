@@ -14,7 +14,7 @@ Route.group(() =>
 
 Route.group(()=>
 Route.resource('/pvd', 'PvdsController').apiOnly()
-).middleware('auth')
+).middleware('auth:api,apiAccount')
 
 Route.resource('/signaturecleint', 'SignatureClientsController').apiOnly()
 Route.resource('/client', 'ClientsController').apiOnly()

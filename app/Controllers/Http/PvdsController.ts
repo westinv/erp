@@ -9,7 +9,6 @@ export default class PvdsController {
     if(!(auth.user instanceof Salesman) && !(auth.user instanceof Account))
       return response.status(403);
 
-
     const {tradeName,companyName,state,cnpj,description,address,city,district,cep,complement,referencePoint } = request.only([
         'tradeName',
         'companyName',
@@ -35,7 +34,10 @@ export default class PvdsController {
         cep,
         complement,
         referencePoint,
+        salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user.salesmanId,
+        accountId: auth.user instanceof Account ? auth.user.id : undefined
     })
+
 
     return pvd;
     }
