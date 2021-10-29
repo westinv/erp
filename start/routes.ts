@@ -16,10 +16,23 @@ Route.group(()=>
 Route.resource('/pvd', 'PvdsController').apiOnly()
 ).middleware('auth:api,apiAccount')
 
-Route.resource('/signaturecleint', 'SignatureClientsController').apiOnly()
+Route.group(() =>
 Route.resource('/client', 'ClientsController').apiOnly()
+).middleware('auth:api,apiAccount')
+
+Route.group(() =>
+Route.resource('/signaturecleint', 'SignatureClientsController').apiOnly()
+)//.middleware('auth:api,apiAccount')
+
+Route.group(() =>
 Route.resource('/product', 'ProductsController').apiOnly()
+).middleware('auth:api,apiAccount')
+
+
+Route.group(() =>
 Route.resource('/signature', 'SignaturesController').apiOnly()
+).middleware('auth:api,apiAccount')
+
 
 
 Route.post('/login', 'AuthController.login')
