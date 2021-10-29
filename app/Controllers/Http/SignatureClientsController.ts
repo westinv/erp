@@ -5,7 +5,7 @@ import Signature from 'App/Models/Signature'; */
 import SignatureClient from 'App/Models/SignatureClient';
 
 export default class SignatureClientsController {
-  public async store({ auth,request, response }: HttpContextContract) {
+  public async store({request }: HttpContextContract) {
     /* if(!(auth.user instanceof Client) && !(auth.user instanceof Signature))
       return response.status(403); */
 
