@@ -14,6 +14,7 @@ export default class Accounts extends BaseSchema {
           .onDelete('CASCADE')
         table.string('username').notNullable().unique()
         table.string('password').notNullable()
+        table.string('name').notNullable()
         table.string('email').notNullable().unique()
 
         table.timestamp('created_at', { useTz: true })

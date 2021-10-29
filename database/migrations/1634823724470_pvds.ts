@@ -21,6 +21,7 @@ export default class Pvds extends BaseSchema {
       table.string('cep').notNullable()
       table.string('complement').notNullable()
       table.string('reference_point').notNullable()
+      table.string('number').notNullable()
 
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })

@@ -8,6 +8,10 @@ export default class Signatures extends BaseSchema {
       table.increments('id')
       table.integer('pvds_id').unsigned().references('id').inTable('pvds').onDelete('CASCADE')
 
+      //table.integer('product_id').unsigned().references('id').inTable('products').onDelete('CASCADE')
+
+
+
 
       table.string('name')
       table.string('price')

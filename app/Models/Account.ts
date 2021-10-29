@@ -20,6 +20,9 @@ export default class Account extends BaseModel {
   public email: string
 
   @column()
+  public name: string
+
+  @column()
   public password: string
 
   @column({ serializeAs: null })

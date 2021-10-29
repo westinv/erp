@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Signature from './Signature'
+import History from './History'
 
 export default class Product extends BaseModel {
   @column({ isPrimary: true })
@@ -8,6 +9,10 @@ export default class Product extends BaseModel {
 
   @hasMany(()=> Signature)
   public signature: HasMany<typeof Signature>
+
+  @hasMany(()=> History)
+  public history: HasMany<typeof History>
+
 
   @column()
   public description: string

@@ -11,7 +11,14 @@ export default class Histories extends BaseSchema {
           .integer('client_id')
           .unsigned()
           .references('id')
-          .inTable('cleints')
+          .inTable('clients')
+          .onDelete('CASCADE')
+
+        table
+          .integer('pvds_id')
+          .unsigned()
+          .references('id')
+          .inTable('pvds')
           .onDelete('CASCADE')
 
       /**

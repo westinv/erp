@@ -4,8 +4,8 @@ import Salesman from 'App/Models/Salesman';
 export default class SalesmenController {
   public async store({ request }: HttpContextContract) {
     const {
-      name, cpf, cnpj, address, city,complements, district, email, phone, username, password,
-    } = request.only(['name', 'complements','email', 'cpf','cnpj', 'address', 'city', 'district', 'phone', 'username', 'password']);
+      name,number ,cpf, cnpj, address, city,complements, district, email, phone, username, password,
+    } = request.only(['name', 'number','complements','email', 'cpf','cnpj', 'address', 'city', 'district', 'phone', 'username', 'password']);
     const salesmen = await Salesman.create({
       name,
       email,
@@ -17,7 +17,8 @@ export default class SalesmenController {
       phone,
       username,
       password,
-      complements
+      complements,
+      number
 
     });
 
@@ -38,7 +39,7 @@ export default class SalesmenController {
 
   public async update({ request, params }: HttpContextContract) {
     const findSalesman = await Salesman.find(params.id);
-    const dados = request.only(['name', 'complements','email', 'cpf_cnpj', 'address', 'city', 'district', 'phone', 'username', 'password']);
+    const dados = request.only(['name', 'number', 'complements','email', 'cpf_cnpj', 'address', 'city', 'district', 'phone', 'username', 'password']);
 
     if (findSalesman) {
       findSalesman.merge(dados);

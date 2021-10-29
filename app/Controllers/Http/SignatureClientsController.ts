@@ -1,17 +1,26 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Client from 'App/Models/Client';
+import History from 'App/Models/History';
+import Signature from 'App/Models/Signature';
 import SignatureClient from 'App/Models/SignatureClient';
 
 export default class SignatureClientsController {
-  public async store({ request }: HttpContextContract) {
-    const { signature_date,active_subscription,due_date } = request.only([
-      'signature_date',
-      'active_subscription',
-      'due_date'
+  public async store({ auth,request, response }: HttpContextContract) {
+    if(!(auth.user instanceof Client) && !(auth.user instanceof Signature) && !(auth.user instanceof History))
+      return response.status(403);
+
+    const { signatureDate,activeSubscription,dueDate } = request.only([
+      'signatureDate',
+      'activeSubscription',
+      'dueDate'
     ]);
     const clients = await SignatureClient.create({
-      signature_date,
-      active_subscription,
-      due_date
+      signatureDate,
+      activeSubscription,
+      dueDate,
+      clientId: auth.user instanceof Client ? auth.user.id : undefined,
+      signatureId: auth.user instanceof Signature ? auth.user.id : undefined,
+      historyId: auth.user instanceof History ? auth.user.id : undefined
     });
 
     return clients;
@@ -32,9 +41,9 @@ export default class SignatureClientsController {
   public async update({ request, params }: HttpContextContract) {
     const findclients = await SignatureClient.find(params.id);
     const dados = request.only([
-      'signature_date',
-      'active_subscription',
-      'due_date'
+      'signatureDate',
+      'activeSubscription',
+      'dueDate'
     ]);
 
     if (findclients) {

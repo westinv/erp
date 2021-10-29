@@ -30,6 +30,9 @@ export default class Salesman extends BaseModel {
   public city: string
 
   @column()
+  public number: string
+
+  @column()
   public complements: string
 
   @column()

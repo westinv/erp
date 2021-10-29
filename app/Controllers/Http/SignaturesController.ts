@@ -1,4 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Product from 'App/Models/Product';
+import Pvd from 'App/Models/Pvd';
 import Signature from 'App/Models/Signature';
 
 export default class SignaturesController {
@@ -12,7 +14,9 @@ export default class SignaturesController {
       name,
       price,
       duration,
-      pvdId: auth.user?.id
+      pvdId: auth.user instanceof Pvd ? auth.user.id : undefined,
+      productId: auth.user instanceof Product ? auth.user.id : undefined,
+
     });
 
     return signature;

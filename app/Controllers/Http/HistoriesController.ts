@@ -1,6 +1,8 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Client from 'App/Models/Client'
 
 import History from "App/Models/History"
+import Product from 'App/Models/Product'
 
 export default class HistoriesController {
   public async store ({ request, auth }: HttpContextContract) {
@@ -9,7 +11,8 @@ export default class HistoriesController {
     ])
     const number = await History.create({
      payment,
-     clientId: auth.user?.id
+     clientId: auth.user instanceof Client ? auth.user.id : undefined,
+     productId: auth.user instanceof Product ? auth.user.id : undefined,
 
     })
 

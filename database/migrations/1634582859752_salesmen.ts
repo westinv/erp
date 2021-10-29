@@ -10,9 +10,10 @@ export default class Salesmen extends BaseSchema {
       table.string('cpf').unique()
       table.string('cnpj').notNullable().unique()
       table.string('address').notNullable()
+      table.string('number').notNullable()
       table.string('city').notNullable()
       table.string('district').notNullable()
-      table.string('complements').notNullable();
+      table.string('complements').notNullable()
       table.string('email').notNullable().unique()
       table.string('phone').notNullable()
       table.string('username').notNullable().unique()

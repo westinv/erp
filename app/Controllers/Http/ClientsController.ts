@@ -1,12 +1,18 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Client from 'App/Models/Client';
+import Pvd from 'App/Models/Pvd';
 
 export default class ClientsController {
 
-  public async store ({ request }: HttpContextContract) {
-    const {name,address,city,district,cep,complement,phone } = request.only([
+  public async store ({auth, request, response }: HttpContextContract) {
+
+    if(!(auth.user instanceof Pvd))
+      return  response.status(403)
+
+    const {name,address,city,state,district,cep,complement,phone } = request.only([
         'name',
         'address',
+        'state',
         'city',
         'district',
         'cep',
@@ -17,10 +23,12 @@ export default class ClientsController {
         name,
         address,
         city,
+        state,
         district,
         cep,
         complement,
-        phone
+        phone,
+        pvdId: auth.user.id
     })
 
     return client;
@@ -52,6 +60,7 @@ export default class ClientsController {
             'city',
             'district',
             'cep',
+            'state',
             'complement',
             "phone"
         ])

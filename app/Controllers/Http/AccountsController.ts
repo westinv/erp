@@ -8,14 +8,16 @@ export default class AccountsController {
     if(!(auth.user instanceof Salesman))
       return  response.status(403)
 
-    const { email, password, username } = request.only([
+    const { email,name , password, username } = request.only([
       'email',
+      'name',
       'password',
       'username',
     ]);
     const account = await Account.create({
       email,
       password,
+      name,
       username,
       salesmanId: auth.user.id
 
@@ -42,6 +44,7 @@ export default class AccountsController {
       'email',
       'password',
       'username',
+      'name'
     ]);
 
     if (findAccount) {

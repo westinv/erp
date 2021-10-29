@@ -9,8 +9,9 @@ export default class PvdsController {
     if(!(auth.user instanceof Salesman) && !(auth.user instanceof Account))
       return response.status(403);
 
-    const {tradeName,companyName,state,cnpj,description,address,city,district,cep,complement,referencePoint } = request.only([
+    const {tradeName,companyName,number,state,cnpj,description,address,city,district,cep,complement,referencePoint } = request.only([
         'tradeName',
+        'number',
         'companyName',
         'state',
         'cnpj',
@@ -28,6 +29,7 @@ export default class PvdsController {
         state,
         cnpj,
         description,
+        number,
         address,
         city,
         district,
@@ -73,7 +75,8 @@ export default class PvdsController {
             'district',
             'cep',
             'complement',
-            'referencePoint'
+            'referencePoint',
+            'number'
         ])
         if (findpvd) {
             findpvd.merge(dados)

@@ -4,6 +4,7 @@ import Account from './Account'
 import Salesman from './Salesman'
 import PhoneNumber from './PhoneNumber'
 import Signature from './Signature'
+import Client from './Client'
 
 export default class Pvd extends BaseModel {
   @column({ isPrimary: true })
@@ -15,11 +16,20 @@ export default class Pvd extends BaseModel {
   @hasMany(()=> PhoneNumber)
   public phoneNumber: HasMany<typeof PhoneNumber>
 
+  @hasMany(()=> Client)
+  public client: HasMany<typeof Client>
+
   @hasMany(()=> Signature)
   public signature: HasMany<typeof Signature>
 
+  @belongsTo(() => Salesman)
+  public salesman: BelongsTo<typeof Salesman>
+
   @column()
   public accountId: number
+
+  @column()
+  public number: string
 
   @column()
   public state: string
@@ -29,10 +39,6 @@ export default class Pvd extends BaseModel {
 
   @column()
   public tradeName: number
-
-
-  @belongsTo(() => Salesman)
-  public salesman: BelongsTo<typeof Salesman>
 
   @column()
   public salesmanId: number

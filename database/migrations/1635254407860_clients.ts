@@ -7,6 +7,8 @@ export default class Clients extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
 
+      table.integer('pvds_id').unsigned().references('id').inTable('pvds').onDelete('CASCADE')
+
       table.string('name').notNullable()
       table.string('address').notNullable()
       table.string('city').notNullable()
@@ -14,13 +16,7 @@ export default class Clients extends BaseSchema {
       table.string('cep').notNullable()
       table.string('complement').notNullable()
       table.string('phone').notNullable()
-        /* table
-          .integer('history_id')
-          .unsigned()
-          .references('id')
-          .inTable('history')
-          .onDelete('CASCADE') */
-
+      table.string('state').notNullable()
 
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
