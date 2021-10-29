@@ -7,7 +7,7 @@ export default class ClientsController {
   public async store ({ request }: HttpContextContract) {
 
 
-    const {name,address,city,state,district,cep,complement,phone } = request.body()
+    const {name,address,city,number,state,district,cep,complement,phone } = request.body()
     const client = await Client.create({
         name,
         address,
@@ -17,6 +17,7 @@ export default class ClientsController {
         cep,
         complement,
         phone,
+        number
     })
 
     return client;

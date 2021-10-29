@@ -17,6 +17,7 @@ export default class Clients extends BaseSchema {
       table.string('complement').notNullable()
       table.string('phone').notNullable()
       table.string('state').notNullable()
+      table.string('number').notNullable()
 
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
