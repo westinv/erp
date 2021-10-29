@@ -8,12 +8,7 @@ export default class AccountsController {
     if(!(auth.user instanceof Salesman))
       return  response.status(403)
 
-    const { email,name , password, username } = request.only([
-      'email',
-      'name',
-      'password',
-      'username',
-    ]);
+    const { email,name , password, username } = request.body();
     const account = await Account.create({
       email,
       password,

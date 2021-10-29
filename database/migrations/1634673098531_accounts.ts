@@ -12,11 +12,11 @@ export default class Accounts extends BaseSchema {
           .references('id')
           .inTable('salesmen')
           .onDelete('CASCADE')
-        table.string('username').notNullable().unique()
+
         table.string('password').notNullable()
         table.string('name').notNullable()
         table.string('email').notNullable().unique()
-
+        table.string('username').notNullable().unique()
         table.timestamp('created_at', { useTz: true })
         table.timestamp('updated_at', { useTz: true })
       })

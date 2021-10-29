@@ -25,7 +25,7 @@ export default class Account extends BaseModel {
   @column()
   public password: string
 
-  @column({ serializeAs: null })
+  @column()
   public username: string
 
   @column.dateTime({ autoCreate: true })

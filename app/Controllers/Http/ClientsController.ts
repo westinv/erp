@@ -17,7 +17,7 @@ export default class ClientsController {
         cep,
         complement,
         phone,
-        number
+        number,
     })
 
     return client;
