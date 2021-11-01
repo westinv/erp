@@ -4,39 +4,58 @@ import Pvd from 'App/Models/Pvd';
 import Signature from 'App/Models/Signature';
 
 export default class SignaturesController {
-  public async store({ request, auth }: HttpContextContract) {
-    const { name, price, duration } = request.only([
-      'name',
-      'price',
-      'duration'
-    ]);
-    const signature = await Signature.create({
-      name,
-      price,
-      duration,
-      pvdId: auth.user instanceof Pvd ? auth.user.id : undefined,
-      productId: auth.user instanceof Product ? auth.user.id : undefined,
 
-    });
+  public async store({ request, auth, response }: HttpContextContract) {
 
-    return signature;
+    try {
+      const { name, price, duration } = request.only([
+        'name',
+        'price',
+        'duration'
+      ]);
+      const signature = await Signature.create({
+        name,
+        price,
+        duration,
+        pvdId: auth.user instanceof Pvd ? auth.user.id : undefined,
+        productId: auth.user instanceof Product ? auth.user.id : undefined,
+
+      });
+
+      return signature;
+
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
+
   }
 
-  public async index({}: HttpContextContract) {
-    const signature = await Signature.all();
+  public async index({response}: HttpContextContract) {
 
-    return signature;
+    try {
+      const signature = await Signature.all();
+      return signature;
+
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
   }
 
-  public async show({ params }: HttpContextContract) {
-    const signature = await Signature.find(params.id);
-    await signature?.load('pvd')
+  public async show({ params, response }: HttpContextContract) {
 
-    return signature;
+    try {
+      const signature = await Signature.find(params.id);
+      await signature?.load('pvd')
+      return signature;
+
+    } catch (error) {
+      return response.status(404).json({message: error.message})
+    }
   }
 
-  public async update({ request, params }: HttpContextContract) {
-    const findsignature = await Signature.find(params.id);
+  public async update({ request, params, response }: HttpContextContract) {
+    try {
+      const findsignature = await Signature.find(params.id);
     const dados = request.only([
       'name',
       'price',
@@ -49,6 +68,9 @@ export default class SignaturesController {
     }
 
     return findsignature;
+    } catch (error) {
+      return response.status(404).json({message: error.message})
+    }
   }
 
   public async destroy({ params, response }: HttpContextContract) {

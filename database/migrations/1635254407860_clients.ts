@@ -7,7 +7,7 @@ export default class Clients extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
 
-      table.integer('pvds_id').unsigned().references('id').inTable('pvds').onDelete('CASCADE')
+      table.integer('pvd_id').unsigned().references('id').inTable('pvds').onDelete('CASCADE')
 
       table.string('name').notNullable()
       table.string('address').notNullable()

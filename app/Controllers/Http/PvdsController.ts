@@ -6,7 +6,9 @@ import Salesman from 'App/Models/Salesman';
 export default class PvdsController {
 
     public async store ({ response,auth,request }: HttpContextContract) {
-    if(!(auth.user instanceof Salesman) && !(auth.user instanceof Account))
+
+      try {
+        if(!(auth.user instanceof Salesman) && !(auth.user instanceof Account))
       return response.status(403);
 
     const {tradeName,companyName,number,state,cnpj,description,address,city,district,cep,complement,referencePoint } = request.only([
@@ -39,21 +41,30 @@ export default class PvdsController {
         salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user.salesmanId,
         accountId: auth.user instanceof Account ? auth.user.id : undefined
     })
-
-
     return pvd;
-    }
 
-    public async index ({}: HttpContextContract) {
-        const pvd = await Pvd.all()
-
-        return pvd
+      } catch (error) {
+        return response.status(400).json({message: error.message})
       }
 
-      public async show ({ params }: HttpContextContract) {
-        const pvd = await Pvd.find(params.id)
+    }
 
-        return pvd
+    public async index ({response}: HttpContextContract) {
+        try {
+          const pvd = await Pvd.all()
+          return pvd
+        } catch (error) {
+          return response.status(400).json({message: error.message})
+        }
+      }
+
+      public async show ({ params, response }: HttpContextContract) {
+        try {
+          const pvd = await Pvd.find(params.id)
+          return pvd
+        } catch (error) {
+          return response.status(400).json({message: error.message})
+        }
       }
 
       public async destroy ({ params, response }: HttpContextContract) {
@@ -62,8 +73,9 @@ export default class PvdsController {
           return response.status(404);
         await findpvd.delete()
       }
-      public async update ({ request, params }: HttpContextContract) {
-        const findpvd = await Pvd.find(params.id)
+      public async update ({ request, params, response }: HttpContextContract) {
+        try {
+          const findpvd = await Pvd.find(params.id)
         const dados = request.only([
             'tradeName',
             'companyName',
@@ -82,8 +94,10 @@ export default class PvdsController {
             findpvd.merge(dados)
             await findpvd.save()
           }
-
-          return findpvd
+        return findpvd
+        } catch (error) {
+          return response.status(400).json({message: error.message})
+        }
 
       }
 

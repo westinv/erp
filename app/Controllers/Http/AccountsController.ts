@@ -5,7 +5,8 @@ import Salesman from 'App/Models/Salesman';
 
 export default class AccountsController {
   public async store({ response,request, auth }: HttpContextContract) {
-    if(!(auth.user instanceof Salesman))
+    try {
+      if(!(auth.user instanceof Salesman))
       return  response.status(403)
 
     const { email,name , password, username } = request.body();
@@ -19,21 +20,34 @@ export default class AccountsController {
     });
 
     return account;
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
+
   }
 
-  public async index({}: HttpContextContract) {
-    const account = await Account.all()
+  public async index({response}: HttpContextContract) {
+    try {
+      const account = await Account.all()
+      return account;
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
 
-    return account;
   }
 
-  public async show({ params }: HttpContextContract) {
-    const account = await Account.find(params.id);
-    await account?.load('salesman')
-    return account;
+  public async show({ params, response }: HttpContextContract) {
+    try {
+      const account = await Account.find(params.id);
+      await account?.load('salesman')
+      return account;
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
   }
 
-  public async update({ request, params }: HttpContextContract) {
+  public async update({ request, params, response }: HttpContextContract) {
+    try {
     const findAccount = await Account.find(params.id);
     const dados = request.only([
       'email',
@@ -48,6 +62,9 @@ export default class AccountsController {
     }
 
     return findAccount;
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
   }
 
   public async destroy({ params, response }: HttpContextContract) {

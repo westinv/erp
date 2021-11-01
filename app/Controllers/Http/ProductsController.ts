@@ -3,41 +3,57 @@ import Product from 'App/Models/Product';
 
 export default class ProductsController {
 
-  public async store({ request }: HttpContextContract) {
-    const { description } = request.only([
-      'description'
-    ]);
-    const products = await Product.create({
-      description
-    });
+  public async store({ request, response }: HttpContextContract) {
+    try {
+      const { description } = request.only([
+        'description'
+      ]);
+      const products = await Product.create({
+        description
+      });
 
-    return products;
+      return products;
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
   }
 
-  public async index({}: HttpContextContract) {
-    const products = await Product.all();
-
-    return products;
-  }
-
-  public async show({ params }: HttpContextContract) {
-    const products = await Product.find(params.id);
-
-    return products;
-  }
-
-  public async update({ request, params }: HttpContextContract) {
-    const findproducts = await Product.find(params.id);
-    const dados = request.only([
-      'description'
-    ]);
-
-    if (findproducts) {
-      findproducts.merge(dados);
-      await findproducts.save();
+  public async index({response}: HttpContextContract) {
+    try {
+      const products = await Product.all();
+      return products;
+    } catch (error) {
+      return response.status(400).json({message: error.message})
     }
 
+  }
+
+  public async show({ params, response }: HttpContextContract) {
+    try {
+      const products = await Product.find(params.id);
+      return products;
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
+  }
+
+  public async update({ request, params, response }: HttpContextContract) {
+    try {
+      const findproducts = await Product.find(params.id);
+      const dados = request.only([
+      'description'
+    ]);
+
+      if (findproducts) {
+        findproducts.merge(dados);
+        await findproducts.save();
+      }
+
     return findproducts;
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
+
   }
 
   public async destroy({ params, response }: HttpContextContract) {

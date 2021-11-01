@@ -18,7 +18,7 @@ export default class Client extends BaseModel {
   public signatureClient: HasMany<typeof SignatureClient>
 
   @column()
-  public pvdId: number
+  public pvdId: string
 
   @column()
   public name: string
