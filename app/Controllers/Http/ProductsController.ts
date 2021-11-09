@@ -5,11 +5,19 @@ export default class ProductsController {
 
   public async store({ request, response }: HttpContextContract) {
     try {
-      const { description } = request.only([
-        'description'
+      const { description, price, name, freight, discount } = request.only([
+        'description',
+        'price',
+        'name',
+        'freight',
+        'discount'
       ]);
       const products = await Product.create({
-        description
+        description,
+        price,
+        name,
+        freight,
+        discount
       });
 
       return products;
@@ -41,7 +49,11 @@ export default class ProductsController {
     try {
       const findproducts = await Product.find(params.id);
       const dados = request.only([
-      'description'
+        'description',
+        'price',
+        'name',
+        'freight',
+        'discount'
     ]);
 
       if (findproducts) {

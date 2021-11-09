@@ -20,12 +20,6 @@ export default class SignatureClients extends BaseSchema {
           .inTable('signatures')
           .onDelete('CASCADE')
 
-      /* table
-          .integer('history_id')
-          .unsigned()
-          .references('id')
-          .inTable('histories')
-          .onDelete('CASCADE') */
 
       table.string("signature_date").notNullable
       table.string("due_date").notNullable

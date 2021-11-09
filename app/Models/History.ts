@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Client from './Client';
 import Product from './Product';
-import SignatureClient from './SignatureClient';
+import Signature from './Signature';
+import Pvd from './Pvd';
 
 export default class History extends BaseModel {
   @column({ isPrimary: true })
@@ -17,8 +18,17 @@ export default class History extends BaseModel {
   @belongsTo(() => Product)
   public product: BelongsTo<typeof Product>
 
-  @hasMany(()=> SignatureClient)
-  public signature: HasMany<typeof SignatureClient>
+  @belongsTo(() => Pvd)
+  public pvd: BelongsTo<typeof Pvd>
+
+  @belongsTo(() => Signature)
+  public signature: BelongsTo<typeof Signature>
+
+  @column()
+  public signatureId: number;
+
+  @column()
+  public pvdId: number;
 
   @column()
   public productId: number

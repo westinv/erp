@@ -21,6 +21,21 @@ export default class Histories extends BaseSchema {
           .inTable('pvds')
           .onDelete('CASCADE')
 
+        table
+          .integer('product_id')
+          .unsigned()
+          .references('id')
+          .inTable('products')
+          .onDelete('CASCADE')
+
+        table
+          .integer('signatures_id')
+          .unsigned()
+          .references('id')
+          .inTable('signatures')
+          .onDelete('CASCADE')
+
+
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

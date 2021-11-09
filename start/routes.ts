@@ -33,7 +33,11 @@ Route.group(() =>
 Route.resource('/signature', 'SignaturesController').apiOnly()
 ).middleware('auth:api,apiAccount')
 
-
+Route.get('/history/pvd/:id', 'HistoriesController.showHistoryByPdvId')
+Route.get('/history/client/:id', 'HistoriesController.showHistoryByClientId')
+Route.get('/history/product/:id', 'HistoriesController.showHistoryByproductId')
+Route.get('/history/signature/:id', 'HistoriesController.showHistoryBySignaturesId')
 
 Route.post('/login', 'AuthController.login')
 Route.post('/loginaccount', 'AuthController.loginAccount')
+

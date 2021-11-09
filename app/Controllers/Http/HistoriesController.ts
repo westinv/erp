@@ -1,4 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Database from '@ioc:Adonis/Lucid/Database'
 import History from 'App/Models/History'
 
 export default class HistoriesController {
@@ -19,6 +20,7 @@ export default class HistoriesController {
   public async index ({response}: HttpContextContract) {
     try {
     const number = await History.all()
+
     return number
     } catch (error) {
       return response.status(400).json({message: error.message})
@@ -59,4 +61,47 @@ export default class HistoriesController {
       return response.status(404);
     await findnumber.delete()
   }
+
+  public async showHistoryByPdvId ({ params}: HttpContextContract) {
+
+  const {id} =  params
+
+  const listHistory = await Database
+  .from('histories')
+  .where('pvds_id', `${id}`)
+
+   return listHistory
+  }
+
+  public async showHistoryByClientId ({ params}: HttpContextContract) {
+
+    const {id} =  params
+
+    const listHistory = await Database
+    .from('histories')
+    .where('client_id', `${id}`)
+
+     return listHistory
+    }
+
+  public async showHistoryByproductId ({ params}: HttpContextContract) {
+
+      const {id} =  params
+
+      const listHistory = await Database
+      .from('histories')
+      .where('product_id', `${id}`)
+
+       return listHistory
+      }
+  public async showHistoryBySignaturesId ({ params}: HttpContextContract) {
+
+      const {id} =  params
+
+      const listHistory = await Database
+      .from('histories')
+      .where('signatures_id', `${id}`)
+
+      return listHistory
+        }
 }
