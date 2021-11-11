@@ -1,28 +1,28 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Product from 'App/Models/Product';
-
-export default class ProductsController {
+import Kit from 'App/Models/Kit';
+import KitProduct from 'App/Models/KitProduct';
+export default class KitsController {
 
   public async store({ request, response }: HttpContextContract) {
     try {
-      const { description, price, name, shipping, discount,quantity } = request.only([
-        'description',
+      const { kitDescription, price, name, shipping, discount, quantity } = request.only([
+        'kitDescription',
         'price',
         'name',
         'shipping',
         'discount',
-        'quantity'
+        'quantity',
       ]);
-      const products = await Product.create({
-        description,
+      const kits = await Kit.create({
+        kitDescription,
         price,
         name,
         shipping,
         discount,
-        quantity
+        quantity,
       });
 
-      return products;
+      return kits;
     } catch (error) {
       return response.status(400).json({message: error.message})
     }
@@ -30,8 +30,9 @@ export default class ProductsController {
 
   public async index({response}: HttpContextContract) {
     try {
-      const products = await Product.all();
-      return products;
+      const kits = await Kit.all();
+
+      return kits;
     } catch (error) {
       return response.status(400).json({message: error.message})
     }
@@ -40,8 +41,9 @@ export default class ProductsController {
 
   public async show({ params, response }: HttpContextContract) {
     try {
-      const products = await Product.find(params.id);
-      return products;
+      const kits = await Kit.find(params.id);
+      await kits?.load('product')
+      return kits;
     } catch (error) {
       return response.status(400).json({message: error.message})
     }
@@ -49,9 +51,9 @@ export default class ProductsController {
 
   public async update({ request, params, response }: HttpContextContract) {
     try {
-      const findproducts = await Product.find(params.id);
+      const findkits = await Kit.find(params.id);
       const dados = request.only([
-        'description',
+        'kit_description',
         'price',
         'name',
         'shipping',
@@ -59,12 +61,12 @@ export default class ProductsController {
         'quantity'
     ]);
 
-      if (findproducts) {
-        findproducts.merge(dados);
-        await findproducts.save();
+      if (findkits) {
+        findkits.merge(dados);
+        await findkits.save();
       }
 
-    return findproducts;
+    return findkits;
     } catch (error) {
       return response.status(400).json({message: error.message})
     }
@@ -72,12 +74,27 @@ export default class ProductsController {
   }
 
   public async destroy({ params, response }: HttpContextContract) {
-    const findproducts = await Product.find(params.id);
+    const findkits = await Kit.find(params.id);
 
-    if(!findproducts)
+    if(!findkits)
       return response.status(404);
-    await findproducts.delete();
+    await findkits.delete();
   }
 
+  public async kitProduct({ request, response }: HttpContextContract){
 
+    try {
+      const { kitId, productId } = request.body()
+      const kitProduct = await KitProduct.create({
+        kitId,
+        productId
+      });
+
+      return kitProduct;
+  }
+    catch (error) {
+      return response.status(400).json({message: error.message})
+  }
+
+  }
 }

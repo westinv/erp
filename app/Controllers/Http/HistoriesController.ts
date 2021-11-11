@@ -31,7 +31,6 @@ export default class HistoriesController {
   public async show ({ params, response }: HttpContextContract) {
     try {
     const number = await History.find(params.id)
-    await number?.load('history')
     return number
     } catch (error) {
       return response.status(400).json({message: error.message})
@@ -63,14 +62,12 @@ export default class HistoriesController {
   }
 
   public async showHistoryByPdvId ({ params}: HttpContextContract) {
+    const {id} =  params
+    const listHistory = await Database
+    .from('histories')
+    .where('pvds_id', `${id}`)
 
-  const {id} =  params
-
-  const listHistory = await Database
-  .from('histories')
-  .where('pvds_id', `${id}`)
-
-   return listHistory
+    return listHistory
   }
 
   public async showHistoryByClientId ({ params}: HttpContextContract) {
@@ -104,4 +101,5 @@ export default class HistoriesController {
 
       return listHistory
         }
+
 }

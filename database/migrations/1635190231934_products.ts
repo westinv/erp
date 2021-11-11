@@ -10,7 +10,8 @@ export default class Products extends BaseSchema {
       table.string('name').notNullable()
       table.string('price').notNullable()
       table.string('discount')
-      table.string('freight')
+      table.string('shipping')
+      table.string('quantity').notNullable()
 
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })

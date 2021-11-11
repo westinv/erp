@@ -2,6 +2,7 @@ import { DateTime } from 'luxon'
 import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Signature from './Signature'
 import History from './History'
+import Kit from './Kit'
 
 export default class Product extends BaseModel {
   @column({ isPrimary: true })
@@ -12,6 +13,9 @@ export default class Product extends BaseModel {
 
   @hasMany(()=> History)
   public history: HasMany<typeof History>
+
+  @hasMany(()=>Kit )
+  public kit: HasMany<typeof Kit>
 
 
   @column()
@@ -27,7 +31,10 @@ export default class Product extends BaseModel {
   public discount: string
 
   @column()
-  public freight: string
+  public shipping: string
+
+  @column()
+  public quantity: string
 
 
   @column.dateTime({ autoCreate: true })
