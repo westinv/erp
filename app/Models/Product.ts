@@ -1,8 +1,9 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Signature from './Signature'
 import History from './History'
 import Kit from './Kit'
+import Pvd from './Pvd'
 
 export default class Product extends BaseModel {
   @column({ isPrimary: true })
@@ -17,6 +18,11 @@ export default class Product extends BaseModel {
   @hasMany(()=>Kit )
   public kit: HasMany<typeof Kit>
 
+  @belongsTo(() => Pvd)
+  public pvd: BelongsTo<typeof Pvd>
+
+  @column()
+  public pvdId: string
 
   @column()
   public description: string

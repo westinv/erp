@@ -5,21 +5,16 @@ export default class ProductsController {
 
   public async store({ request, response }: HttpContextContract) {
     try {
-      const { description, price, name, shipping, discount,quantity } = request.only([
-        'description',
-        'price',
-        'name',
-        'shipping',
-        'discount',
-        'quantity'
-      ]);
+      const pvdId = request.header('pvdId')
+      const { description, price, name, shipping, discount,quantity } = request.body();
       const products = await Product.create({
         description,
         price,
         name,
         shipping,
         discount,
-        quantity
+        quantity,
+        pvdId,
       });
 
       return products;
@@ -29,8 +24,9 @@ export default class ProductsController {
   }
 
   public async index({response}: HttpContextContract) {
+
     try {
-      const products = await Product.all();
+      const products = await Product.all()
       return products;
     } catch (error) {
       return response.status(400).json({message: error.message})
@@ -50,15 +46,7 @@ export default class ProductsController {
   public async update({ request, params, response }: HttpContextContract) {
     try {
       const findproducts = await Product.find(params.id);
-      const dados = request.only([
-        'description',
-        'price',
-        'name',
-        'shipping',
-        'discount',
-        'quantity'
-    ]);
-
+      const dados = request.body();
       if (findproducts) {
         findproducts.merge(dados);
         await findproducts.save();
@@ -68,7 +56,6 @@ export default class ProductsController {
     } catch (error) {
       return response.status(400).json({message: error.message})
     }
-
   }
 
   public async destroy({ params, response }: HttpContextContract) {
@@ -79,5 +66,21 @@ export default class ProductsController {
     await findproducts.delete();
   }
 
+  public async indexByPdvId({response, request}: HttpContextContract) {
+
+    const pvdId = request.header('pvdId')
+
+    if(!pvdId){
+      return response.status(400).json({message: "Esqueceu de passar"})
+    }
+
+     try {
+      const products = await Product.query().where('pvdId', pvdId)
+      return products;
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
+
+  }
 
 }

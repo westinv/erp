@@ -13,6 +13,13 @@ export default class Products extends BaseSchema {
       table.string('shipping')
       table.string('quantity').notNullable()
 
+      table
+          .integer('pvd_id')
+          .unsigned()
+          .references('id')
+          .inTable('pvds')
+          .onDelete('CASCADE')
+
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })

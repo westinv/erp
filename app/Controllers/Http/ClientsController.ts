@@ -6,7 +6,8 @@ export default class ClientsController {
 
   public async store ({ request,response }: HttpContextContract) {
      try {
-      const {name,address,city,number,state,district,cep,complement,phone,pvdId } = request.body()
+      const pvdId = request.header('pvdId')
+      const {name,address,city,number,state,district,cep,complement,phone} = request.body()
       const client = await Client.create({
           name,
           address,
@@ -17,7 +18,7 @@ export default class ClientsController {
           complement,
           phone,
           number,
-          pvdId
+          pvdId,
       })
       return client;
      } catch (error) {
@@ -63,4 +64,18 @@ export default class ClientsController {
           return response.status(400).json({message: error.message})
         }
       }
+
+      public async indexByPdvId ({response, request}: HttpContextContract) {
+        const pvdId = request.header('pvdId')
+
+        if(!pvdId){
+          return response.status(400).json({message: "Esqueceu de passar"})
+        }
+        try {
+          const client = await Client.query().where('pvdId', pvdId)
+          return client
+        } catch (error) {
+          return response.status(400).json({message: error.message})
+        }
+        }
 }

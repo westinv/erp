@@ -15,13 +15,13 @@ export default class SignatureClient extends BaseModel {
 
 
   @column()
-  public historyId : number
+  public historyId : string
 
   @column()
-  public signatureId : number
+  public signatureId : string
 
   @column()
-  public clientId : number
+  public clientId : string
 
   @column()
   public signatureDate : string

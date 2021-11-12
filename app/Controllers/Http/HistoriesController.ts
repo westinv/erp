@@ -5,11 +5,19 @@ import History from 'App/Models/History'
 export default class HistoriesController {
   public async store ({ request, response }: HttpContextContract) {
     try {
+      const clientId = request.header('client_id')
+      const productId = request.header('productId')
+      const signatureId = request.header('signatureId')
+      const pvdId = request.header('pvdId')
       const {payment } = request.only([
         'payment'
       ])
       const number = await History.create({
        payment,
+       clientId,
+       productId,
+       signatureId,
+       pvdId,
       })
       return number
     } catch (error) {
@@ -79,7 +87,7 @@ export default class HistoriesController {
     .where('client_id', `${id}`)
 
      return listHistory
-    }
+  }
 
   public async showHistoryByproductId ({ params}: HttpContextContract) {
 
@@ -90,7 +98,7 @@ export default class HistoriesController {
       .where('product_id', `${id}`)
 
        return listHistory
-      }
+  }
   public async showHistoryBySignaturesId ({ params}: HttpContextContract) {
 
       const {id} =  params
@@ -100,6 +108,6 @@ export default class HistoriesController {
       .where('signatures_id', `${id}`)
 
       return listHistory
-        }
+  }
 
 }

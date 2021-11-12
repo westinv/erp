@@ -25,16 +25,16 @@ export default class History extends BaseModel {
   public signature: BelongsTo<typeof Signature>
 
   @column()
-  public signatureId: number;
+  public signatureId: string;
 
   @column()
-  public pvdId: number;
+  public pvdId: string;
 
   @column()
-  public productId: number
+  public productId: string
 
   @column()
-  public clientId: number;
+  public clientId: string;
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

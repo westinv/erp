@@ -5,9 +5,9 @@ export default class SignatureClients extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
+      table.increments('id').primary()
       table
-          .integer('clients_id')
+          .integer('client_id')
           .unsigned()
           .references('id')
           .inTable('clients')

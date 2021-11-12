@@ -19,10 +19,10 @@ export default class Signature extends BaseModel {
 
 
   @column()
-  public productId: number
+  public productId: string
 
   @column()
-  public pvdId: number
+  public pvdId: string
 
   @column()
   public name: string

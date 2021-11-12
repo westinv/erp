@@ -5,12 +5,10 @@ export default class Inventories extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
+      table.increments('id').primary()
 
-      table.string('product_name').notNullable()
-      table.string('product_amount').notNullable()
-      table.string('description').notNullable()
-      table.string('price').notNullable()
+
+
 
 
 
