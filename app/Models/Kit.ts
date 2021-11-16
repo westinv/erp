@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel,column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel,column, hasMany, HasMany, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
 import Product from './Product'
+import KitProduct from './KitProduct'
 
 export default class Kit extends BaseModel {
   @column({ isPrimary: true })
@@ -26,6 +27,9 @@ export default class Kit extends BaseModel {
 
   @manyToMany(() => Product)
   public product: ManyToMany<typeof Product>
+
+  @hasMany(()=>KitProduct )
+  public kitProduct: HasMany<typeof KitProduct>
 
 
 

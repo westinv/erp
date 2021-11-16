@@ -38,6 +38,7 @@ Route.group(() =>
 Route.resource('/kit', 'KitsController').apiOnly()
 )//.middleware('auth:api,apiAccount')
 Route.post('/kitproduct', 'KitsController.kitProduct')
+Route.delete('/kitproduct/:id', 'KitsController.kitProductDelete')
 
 
 Route.get('/history/pvd/:id', 'HistoriesController.showHistoryByPdvId')

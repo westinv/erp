@@ -17,7 +17,7 @@ export default class KitProduct extends BaseModel {
   public productId: number
 
   @column()
-  public kitId: number
+  public kitId: string
 
 
   @column.dateTime({ autoCreate: true })

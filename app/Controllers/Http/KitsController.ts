@@ -5,14 +5,7 @@ export default class KitsController {
 
   public async store({ request, response }: HttpContextContract) {
     try {
-      const { kitDescription, price, name, shipping, discount, quantity } = request.only([
-        'kitDescription',
-        'price',
-        'name',
-        'shipping',
-        'discount',
-        'quantity',
-      ]);
+      const { kitDescription, price, name, shipping, discount, quantity } = request.body();
       const kits = await Kit.create({
         kitDescription,
         price,
@@ -37,16 +30,6 @@ export default class KitsController {
       return response.status(400).json({message: error.message})
     }
 
-  }
-
-  public async show({ params, response }: HttpContextContract) {
-    try {
-      const kits = await Kit.find(params.id);
-      await kits?.load('product')
-      return kits;
-    } catch (error) {
-      return response.status(400).json({message: error.message})
-    }
   }
 
   public async update({ request, params, response }: HttpContextContract) {
@@ -81,20 +64,41 @@ export default class KitsController {
     await findkits.delete();
   }
 
+  public async show({ params, response }: HttpContextContract) {
+    try {
+      const kits = await Kit.find(params.id);
+      await kits?.load('kitProduct')
+      return kits;
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
+  }
+
   public async kitProduct({ request, response }: HttpContextContract){
 
     try {
-      const { kitId, productId } = request.body()
+      const kitId = request.header('kitId')
+      const { productId } = request.body()
       const kitProduct = await KitProduct.create({
         kitId,
         productId
       });
 
       return kitProduct;
-  }
+    }
     catch (error) {
       return response.status(400).json({message: error.message})
+    }
   }
 
+  public async kitProductDelete({ params, response }: HttpContextContract){
+    try {
+      const findkitProduct = await KitProduct.find(params.id)
+        if(!findkitProduct)
+          return response.status(404)
+          await findkitProduct.delete()
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
   }
 }
