@@ -7,10 +7,10 @@ export default class PhoneNumbers extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       table
-          .integer('pvds_id')
+          .integer('pdvs_id')
           .unsigned()
           .references('id')
-          .inTable('pvds')
+          .inTable('pdvs')
           .onDelete('CASCADE')
       table.string('phoneNumber').notNullable()
 

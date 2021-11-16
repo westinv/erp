@@ -3,7 +3,7 @@ import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Client from './Client';
 import Product from './Product';
 import Signature from './Signature';
-import Pvd from './Pvd';
+import Pvd from './Pdv';
 
 export default class History extends BaseModel {
   @column({ isPrimary: true })
@@ -19,7 +19,7 @@ export default class History extends BaseModel {
   public product: BelongsTo<typeof Product>
 
   @belongsTo(() => Pvd)
-  public pvd: BelongsTo<typeof Pvd>
+  public pdv: BelongsTo<typeof Pvd>
 
   @belongsTo(() => Signature)
   public signature: BelongsTo<typeof Signature>
@@ -28,7 +28,7 @@ export default class History extends BaseModel {
   public signatureId: string;
 
   @column()
-  public pvdId: string;
+  public pdvId: string;
 
   @column()
   public productId: string

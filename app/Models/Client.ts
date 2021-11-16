@@ -1,15 +1,15 @@
 import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import History from './History'
-import Pvd from './Pvd'
 import SignatureClient from './SignatureClient'
+import Pvd from './Pdv'
 
 export default class Client extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @belongsTo (()=> Pvd)
-  public pvd: BelongsTo<typeof Pvd>
+  public pdv: BelongsTo<typeof Pvd>
 
   @hasMany(()=> History)
   public history: HasMany<typeof History>
@@ -18,7 +18,7 @@ export default class Client extends BaseModel {
   public signatureClient: HasMany<typeof SignatureClient>
 
   @column()
-  public pvdId: string
+  public pdvId: string
 
   @column()
   public name: string

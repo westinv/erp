@@ -13,7 +13,7 @@ Route.group(() =>
 ).middleware('auth')
 
 Route.group(()=>
-Route.resource('/pvd', 'PvdsController').apiOnly()
+Route.resource('/pdv', 'PvdsController').apiOnly()
 ).middleware('auth:api,apiAccount')
 
 Route.group(() =>
@@ -41,7 +41,7 @@ Route.post('/kitproduct', 'KitsController.kitProduct')
 Route.delete('/kitproduct/:id', 'KitsController.kitProductDelete')
 
 
-Route.get('/history/pvd/:id', 'HistoriesController.showHistoryByPdvId')
+Route.get('/history/pdv/:id', 'HistoriesController.showHistoryByPdvId')
 Route.get('/history/client/:id', 'HistoriesController.showHistoryByClientId')
 Route.get('/history/product/:id', 'HistoriesController.showHistoryByproductId')
 Route.get('/history/signature/:id', 'HistoriesController.showHistoryBySignaturesId')

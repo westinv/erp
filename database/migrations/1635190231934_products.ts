@@ -14,10 +14,10 @@ export default class Products extends BaseSchema {
       table.string('quantity').notNullable()
 
       table
-          .integer('pvd_id')
+          .integer('pdv_id')
           .unsigned()
           .references('id')
-          .inTable('pvds')
+          .inTable('pdvs')
           .onDelete('CASCADE')
 
       table.timestamp('created_at', { useTz: true })

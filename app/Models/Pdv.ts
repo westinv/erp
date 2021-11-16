@@ -6,7 +6,7 @@ import PhoneNumber from './PhoneNumber'
 import Signature from './Signature'
 import Client from './Client'
 
-export default class Pvd extends BaseModel {
+export default class Pdv extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 

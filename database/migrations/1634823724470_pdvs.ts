@@ -1,7 +1,7 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
 export default class Pvds extends BaseSchema {
-  protected tableName = 'pvds'
+  protected tableName = 'pdvs'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {

@@ -1,15 +1,15 @@
 import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, BelongsTo, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
 import Product from './Product'
-import Pvd from './Pvd'
 import SignatureClient from './SignatureClient'
+import Pvd from './Pdv'
 
 export default class Signature extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @belongsTo(() => Pvd)
-  public pvd: BelongsTo<typeof Pvd>
+  public pdv: BelongsTo<typeof Pvd>
 
   @belongsTo(() => Product)
   public product: BelongsTo<typeof Product>
@@ -22,7 +22,7 @@ export default class Signature extends BaseModel {
   public productId: string
 
   @column()
-  public pvdId: string
+  public pdvId: string
 
   @column()
   public name: string

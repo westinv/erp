@@ -7,7 +7,7 @@ export default class SignaturesController {
 
     try {
 
-      const pvdId = request.header('pvdId')
+      const pdvId = request.header('pdvId')
       const productId = request.header('productId')
       const { name, price, duration } = request.body()
 
@@ -15,7 +15,7 @@ export default class SignaturesController {
         name,
         price,
         duration,
-        pvdId,
+        pdvId,
         productId,
 
       });
@@ -43,7 +43,7 @@ export default class SignaturesController {
 
     try {
       const signature = await Signature.find(params.id);
-      await signature?.load('pvd')
+      await signature?.load('pdv')
       return signature;
 
     } catch (error) {

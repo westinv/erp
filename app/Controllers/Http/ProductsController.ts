@@ -5,7 +5,7 @@ export default class ProductsController {
 
   public async store({ request, response }: HttpContextContract) {
     try {
-      const pvdId = request.header('pvdId')
+      const pdvId = request.header('pdvId')
       const { description, price, name, shipping, discount,quantity } = request.body();
       const products = await Product.create({
         description,
@@ -14,7 +14,7 @@ export default class ProductsController {
         shipping,
         discount,
         quantity,
-        pvdId,
+        pdvId,
       });
 
       return products;
@@ -68,14 +68,14 @@ export default class ProductsController {
 
   public async indexByPdvId({response, request}: HttpContextContract) {
 
-    const pvdId = request.header('pvdId')
+    const pdvId = request.header('pdvId')
 
-    if(!pvdId){
+    if(!pdvId){
       return response.status(400).json({message: "Esqueceu de passar"})
     }
 
      try {
-      const products = await Product.query().where('pvdId', pvdId)
+      const products = await Product.query().where('pdvId', pdvId)
       return products;
     } catch (error) {
       return response.status(400).json({message: error.message})

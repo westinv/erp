@@ -8,7 +8,7 @@ export default class HistoriesController {
       const clientId = request.header('client_id')
       const productId = request.header('productId')
       const signatureId = request.header('signatureId')
-      const pvdId = request.header('pvdId')
+      const pdvId = request.header('pdvId')
       const {payment } = request.only([
         'payment'
       ])
@@ -17,7 +17,7 @@ export default class HistoriesController {
        clientId,
        productId,
        signatureId,
-       pvdId,
+       pdvId,
       })
       return number
     } catch (error) {
@@ -73,7 +73,7 @@ export default class HistoriesController {
     const {id} =  params
     const listHistory = await Database
     .from('histories')
-    .where('pvds_id', `${id}`)
+    .where('pdvs_id', `${id}`)
 
     return listHistory
   }

@@ -10,7 +10,7 @@ export default class PhoneNumbersController {
         ])
         const number = await PhoneNumber.create({
          phoneNumber,
-         pvdId: auth.user?.id
+         pdvId: auth.user?.id
 
         })
         return number
@@ -33,7 +33,7 @@ export default class PhoneNumbersController {
       public async show ({ params, response }: HttpContextContract) {
         try {
           const number = await PhoneNumber.find(params.id)
-        await number?.load('pvd')
+        await number?.load('pdv')
         return number
         } catch (error) {
           return response.status(400).json({message: error.message})
