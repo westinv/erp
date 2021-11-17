@@ -24,7 +24,7 @@ export default class Sale extends BaseModel {
 
 
   @column()
-  public pdvId: string
+  public pdvsId: string
 
   @column()
   public clientId: string
