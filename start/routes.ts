@@ -35,6 +35,10 @@ Route.resource('/signature', 'SignaturesController').apiOnly()
 )//.middleware('auth:api,apiAccount')
 
 Route.group(() =>
+Route.resource('/sale', 'SalesController').apiOnly()
+)//.middleware('auth:api,apiAccount')
+
+Route.group(() =>
 Route.resource('/kit', 'KitsController').apiOnly()
 )//.middleware('auth:api,apiAccount')
 Route.post('/kitproduct', 'KitsController.kitProduct')

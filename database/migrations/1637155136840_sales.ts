@@ -29,10 +29,10 @@ export default class Sales extends BaseSchema {
           .onDelete('CASCADE')
 
         table
-          .integer('kit_products_id')
+          .integer('kits_id')
           .unsigned()
           .references('id')
-          .inTable('kit_products')
+          .inTable('kits')
           .onDelete('CASCADE')
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

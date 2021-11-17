@@ -24,13 +24,13 @@ export default class Sale extends BaseModel {
 
 
   @column()
-  public pvdId: string
+  public pdvId: string
 
   @column()
   public clientId: string
 
   @column()
-  public kitId: string
+  public kitsId: string
 
   @column()
   public productId: string
