@@ -76,20 +76,7 @@ export default class PdvsController {
       public async update ({ request, params, response }: HttpContextContract) {
         try {
           const findPdv = await Pvd.find(params.id)
-        const dados = request.only([
-            'tradeName',
-            'companyName',
-            'state',
-            'cnpj',
-            'description',
-            'address',
-            'city',
-            'district',
-            'cep',
-            'complement',
-            'referencePoint',
-            'number'
-        ])
+        const dados = request.body()
         if (findPdv) {
             findPdv.merge(dados)
             await findPdv.save()

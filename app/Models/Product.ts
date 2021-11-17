@@ -32,16 +32,16 @@ export default class Product extends BaseModel {
   public name: string
 
   @column()
-  public price: string
+  public price: number
 
   @column()
-  public discount: string
+  public discount: number
 
   @column()
-  public shipping: string
+  public shipping: number
 
   @column()
-  public quantity: string
+  public quantity: number
 
 
   @column.dateTime({ autoCreate: true })

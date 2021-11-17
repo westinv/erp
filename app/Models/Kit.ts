@@ -14,16 +14,16 @@ export default class Kit extends BaseModel {
   public name: string
 
   @column()
-  public quantity: string
+  public quantity: number
 
   @column()
-  public price: string
+  public price: number
 
   @column()
-  public discount: string
+  public discount: number
 
   @column()
-  public shipping: string
+  public shipping: number
 
   @manyToMany(() => Product)
   public product: ManyToMany<typeof Product>
