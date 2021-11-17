@@ -6,12 +6,12 @@ export default class SalesController {
 
     try {
       //const {pdvId,clientId, kitId, productId } = request.body()
-      const pdvId = request.header('pdvId')
+      const pdvsId = request.header('pdvId')
       const clientId = request.header('clientId')
       const kitsId = request.header('kitId')
       const productId = request.header('pdvId')
       const sale = await Sale.create({
-        pdvId,
+        pdvsId,
         clientId,
         kitsId,
         productId
@@ -42,7 +42,7 @@ export default class SalesController {
       await sale?.load('client')
       await sale?.load('product')
       await sale?.load('kit')
-      await sale?.load('pvd')
+      await sale?.load('pdv')
       return sale
     } catch (error) {
       return response.status(404).json({message: error.message})

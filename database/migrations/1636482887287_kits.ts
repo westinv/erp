@@ -8,11 +8,11 @@ export default class Kits extends BaseSchema {
       table.increments('id').primary()
 
       table.string('name').notNullable()
-      table.string('quantity').notNullable()
-      table.string('price').notNullable()
-      table.string('discount').notNullable()
-      table.string('shipping').notNullable()
-      table.string('kit_description').notNullable()
+      table.float('quantity').notNullable()
+      table.float('price').notNullable()
+      table.float('discount').notNullable()
+      table.float('shipping').notNullable()
+      table.string('description').notNullable()
 
       table
           .integer('product_id')

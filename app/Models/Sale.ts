@@ -10,7 +10,7 @@ export default class Sale extends BaseModel {
   public id: number
 
   @belongsTo (()=> Pdv)
-  public pvd: BelongsTo<typeof Pdv>
+  public pdv: BelongsTo<typeof Pdv>
 
   @belongsTo(() => Product)
   public product: BelongsTo<typeof Product>

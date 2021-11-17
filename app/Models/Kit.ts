@@ -8,7 +8,7 @@ export default class Kit extends BaseModel {
   public id: number
 
   @column()
-  public kitDescription: string
+  public description: string
 
   @column()
   public name: string

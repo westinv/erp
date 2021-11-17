@@ -8,10 +8,10 @@ export default class Products extends BaseSchema {
       table.increments('id').primary()
       table.string('description').notNullable()
       table.string('name').notNullable()
-      table.string('price').notNullable()
-      table.string('discount')
-      table.string('shipping')
-      table.string('quantity').notNullable()
+      table.float('price').notNullable()
+      table.float ('discount')
+      table.float('shipping')
+      table.float('quantity').notNullable()
 
       table
           .integer('pdv_id')

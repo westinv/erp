@@ -5,9 +5,9 @@ export default class KitsController {
 
   public async store({ request, response }: HttpContextContract) {
     try {
-      const { kitDescription, price, name, shipping, discount, quantity } = request.body();
+      const { description, price, name, shipping, discount, quantity } = request.body();
       const kits = await Kit.create({
-        kitDescription,
+        description,
         price,
         name,
         shipping,
