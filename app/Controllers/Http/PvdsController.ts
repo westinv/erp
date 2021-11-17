@@ -11,20 +11,7 @@ export default class PdvsController {
         if(!(auth.user instanceof Salesman) && !(auth.user instanceof Account))
       return response.status(403);
 
-    const {tradeName,companyName,number,state,cnpj,description,address,city,district,cep,complement,referencePoint } = request.only([
-        'tradeName',
-        'number',
-        'companyName',
-        'state',
-        'cnpj',
-        'description',
-        'address',
-        'city',
-        'district',
-        'cep',
-        'complement',
-        'referencePoint'
-    ])
+    const {tradeName,companyName,number,state,cnpj,description,address,city,district,cep,complement,landmark } = request.body()
     const pdv = await Pvd.create({
         tradeName,
         companyName,
@@ -37,7 +24,7 @@ export default class PdvsController {
         district,
         cep,
         complement,
-        referencePoint,
+        landmark,
         salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user.salesmanId,
         accountId: auth.user instanceof Account ? auth.user.id : undefined
     })

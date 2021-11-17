@@ -68,7 +68,7 @@ export default class Pdv extends BaseModel {
   public complement: string
 
   @column()
-  public referencePoint: string
+  public landmark: string
 
 
   @column.dateTime({ autoCreate: true })

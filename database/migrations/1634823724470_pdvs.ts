@@ -20,7 +20,7 @@ export default class Pvds extends BaseSchema {
       table.string('district').notNullable()
       table.string('cep').notNullable()
       table.string('complement').notNullable()
-      table.string('reference_point').notNullable()
+      table.string('landmark').notNullable()
       table.string('number').notNullable()
 
       table.timestamp('created_at', { useTz: true })
