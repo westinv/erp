@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:Adonis/Lucid/Orm'
 import Pdv from './Pdv'
 import Product from './Product'
 import Client from './Client'
@@ -12,15 +12,14 @@ export default class Sale extends BaseModel {
   @belongsTo (()=> Pdv)
   public pdv: BelongsTo<typeof Pdv>
 
-  @belongsTo(() => Product)
-  public product: BelongsTo<typeof Product>
+  @hasMany(() => Product)
+  public product: HasMany<typeof Product>
 
   @belongsTo(() => Client)
   public client: BelongsTo<typeof Client>
 
   @belongsTo(() => Kit)
   public kit: BelongsTo<typeof Kit>
-
 
 
   @column()

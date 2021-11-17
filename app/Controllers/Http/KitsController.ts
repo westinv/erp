@@ -1,8 +1,12 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Kit from 'App/Models/Kit';
 import KitProduct from 'App/Models/KitProduct';
-export default class KitsController {
 
+interface IProducts{
+  productsId?: number[]
+}
+
+export default class KitsController {
   public async store({ request, response }: HttpContextContract) {
     try {
       const { description, price, name, shipping, discount, quantity } = request.body();
@@ -78,13 +82,22 @@ export default class KitsController {
 
     try {
       const kitId = request.header('kitId')
-      const { productId } = request.body()
-      const kitProduct = await KitProduct.create({
-        kitId,
-        productId
-      });
+      const { productsId }: IProducts = request.body()
 
-      return kitProduct;
+      if(!productsId ){
+        return response.status(400).json({message: 'Passou errado!'})
+      }
+      const returnProduct = productsId.map( async (productId)=> {
+        const kitProduct = await KitProduct.create({
+          kitId,
+          productId
+        });
+
+        return kitProduct
+      })
+
+      return returnProduct
+
     }
     catch (error) {
       return response.status(400).json({message: error.message})
