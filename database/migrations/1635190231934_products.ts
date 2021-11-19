@@ -20,6 +20,13 @@ export default class Products extends BaseSchema {
           .inTable('pdvs')
           .onDelete('CASCADE')
 
+          /* table
+          .integer('kit_id')
+          .unsigned()
+          .references('id')
+          .inTable('kits')
+          .onDelete('CASCADE') */
+
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })

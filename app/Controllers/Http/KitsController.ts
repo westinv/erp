@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Kit from 'App/Models/Kit';
 import KitProduct from 'App/Models/KitProduct';
 
+
 interface IProducts{
   productsId?: number[]
 }
@@ -70,20 +71,19 @@ export default class KitsController {
 
   public async show({ params, response }: HttpContextContract) {
     try {
-      const kits = await Kit.find(params.id);
-      await kits?.load('kitProduct')
-      return kits;
+      const kits = await Kit.find(params.id)
+
+      await kits?.load('kitProduct', loader => loader.preload('product'))
+      return kits
     } catch (error) {
       return response.status(400).json({message: error.message})
     }
   }
 
   public async kitProduct({ request, response }: HttpContextContract){
-
     try {
       const kitId = request.header('kitId')
       const { productsId }: IProducts = request.body()
-
       if(!productsId ){
         return response.status(400).json({message: 'Passou errado!'})
       }
@@ -92,18 +92,14 @@ export default class KitsController {
           kitId,
           productId
         });
-
         return kitProduct
       })
-
       return returnProduct
-
     }
     catch (error) {
       return response.status(400).json({message: error.message})
     }
   }
-
   public async kitProductDelete({ params, response }: HttpContextContract){
     try {
       const findkitProduct = await KitProduct.find(params.id)

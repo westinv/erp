@@ -26,6 +26,9 @@ export default class Product extends BaseModel {
   public pdvId: string
 
   @column()
+  public kitId: string
+
+  @column()
   public description: string
 
   @column()

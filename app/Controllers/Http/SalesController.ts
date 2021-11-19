@@ -5,11 +5,8 @@ export default class SalesController {
   public async store({ request, response }: HttpContextContract) {
 
     try {
-      //const {pdvId,clientId, kitId, productId } = request.body()
-      const pdvsId = request.header('pdvId')
-      const clientId = request.header('clientId')
-      const kitsId = request.header('kitId')
-      const productId = request.header('pdvId')
+      const {pdvsId,clientId, kitsId, productId} = request.body()
+
       const sale = await Sale.create({
         pdvsId,
         clientId,
@@ -20,7 +17,6 @@ export default class SalesController {
 
     } catch (error) {
       return response.status(400).json({message: error.message})
-
     }
   }
 

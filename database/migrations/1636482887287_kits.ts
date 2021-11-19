@@ -21,6 +21,12 @@ export default class Kits extends BaseSchema {
           .inTable('products')
           .onDelete('CASCADE')
 
+      table
+      .integer('kit_id')
+      .unsigned()
+      .references('id')
+      .inTable('kits')
+      .onDelete('CASCADE')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

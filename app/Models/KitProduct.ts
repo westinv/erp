@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column, ManyToMany, manyToMany } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column} from '@ioc:Adonis/Lucid/Orm'
 import Product from './Product'
 import Kit from './Kit'
 
@@ -10,8 +10,8 @@ export default class KitProduct extends BaseModel {
   @belongsTo(() => Kit)
   public kit: BelongsTo<typeof Kit>
 
-  @manyToMany(() => Product)
-  public product: ManyToMany<typeof Product>
+  @belongsTo(() => Product)
+  public product: BelongsTo<typeof Product>
 
   @column()
   public productId: number
