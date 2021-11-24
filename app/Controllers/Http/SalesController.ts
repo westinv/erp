@@ -47,7 +47,7 @@ export default class SalesController {
 
       await Database
       .from(`${itemType}`)
-      .where('id', generiId)
+      .where('id', genericId)
       .update({quantity: subtraction})
 
 
