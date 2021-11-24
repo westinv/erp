@@ -7,7 +7,7 @@ export default class SalesmenController {
     try {
       const {
         name,number ,cpf, cnpj, address, city,complements, district, email, phone, username, password,
-      } = request.only(['name', 'number','complements','email', 'cpf','cnpj', 'address', 'city', 'district', 'phone', 'username', 'password']);
+      } = request.body()
       const salesmen = await Salesman.create({
         name,
         email,
@@ -58,7 +58,7 @@ export default class SalesmenController {
   public async update({ response,request, params }: HttpContextContract) {
     try {
       const findSalesman = await Salesman.find(params.id);
-      const dados = request.only(['name', 'number', 'complements','email', 'cpf_cnpj', 'address', 'city', 'district', 'phone', 'username', 'password']);
+      const dados = request.body();
 
       if (findSalesman) {
         findSalesman.merge(dados);

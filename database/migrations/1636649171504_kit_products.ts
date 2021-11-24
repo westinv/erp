@@ -6,7 +6,7 @@ export default class KitProducts extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-
+      table.float('sale_quantity')
       table
       .integer('product_id')
       .unsigned()

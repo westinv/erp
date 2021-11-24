@@ -6,9 +6,9 @@ export default class Sales extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
-
+      table.float('sale_quantity')
         table
-          .integer('pdvs_id')
+          .integer('pdv_id')
           .unsigned()
           .references('id')
           .inTable('pdvs')
@@ -29,7 +29,7 @@ export default class Sales extends BaseSchema {
           .onDelete('CASCADE')
 
         table
-          .integer('kits_id')
+          .integer('kit_id')
           .unsigned()
           .references('id')
           .inTable('kits')

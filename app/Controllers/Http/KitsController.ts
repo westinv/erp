@@ -4,7 +4,8 @@ import KitProduct from 'App/Models/KitProduct';
 
 
 interface IProducts{
-  productsId?: number[]
+  productsId?: number[],
+  saleQuantity?: number
 }
 
 export default class KitsController {
@@ -17,7 +18,7 @@ export default class KitsController {
         name,
         shipping,
         discount,
-        quantity,
+        quantity
       });
 
       return kits;
@@ -83,14 +84,15 @@ export default class KitsController {
   public async kitProduct({ request, response }: HttpContextContract){
     try {
       const kitId = request.header('kitId')
-      const { productsId }: IProducts = request.body()
+      const { productsId, saleQuantity }: IProducts = request.body()
       if(!productsId ){
         return response.status(400).json({message: 'Passou errado!'})
       }
       const returnProduct = productsId.map( async (productId)=> {
         const kitProduct = await KitProduct.create({
           kitId,
-          productId
+          productId,
+          saleQuantity
         });
         return kitProduct
       })

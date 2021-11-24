@@ -25,6 +25,11 @@ export default class Kit extends BaseModel {
   @column()
   public shipping: number
 
+  @column()
+  public saleId: number
+
+
+
   @hasMany(()=>KitProduct )
   public kitProduct: HasMany<typeof KitProduct>
 
