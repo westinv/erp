@@ -51,13 +51,18 @@ export default class SalesController {
 
       if(kitId){
 
-        const [kitProduct] = await KitProduct.query().where('kit_id', kitId)
-        console.log(kitProduct)
-        const teste = kitProduct.map(async (kitProduct) =>{
-        await Database
-        .from('products')
-        .where('id', kitProduct)
-        .update({quantity: subtraction})
+        const kitProduct = await KitProduct.query().where('kit_id', kitId)
+
+
+        const teste = kitProduct.map(async (product) =>{
+
+        const teste1 = product.$attributes.productId
+
+        console.log(teste1)
+
+        await Sale.query().from('products').where('id',teste1 ).update({quantity: subtraction})
+
+
         })
         return teste
       }
