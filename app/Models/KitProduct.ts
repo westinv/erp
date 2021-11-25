@@ -4,9 +4,6 @@ import Product from './Product'
 import Kit from './Kit'
 
 export default class KitProduct extends BaseModel {
-  static map(arg0: (productId: any) => Promise<void>) {
-    throw new Error('Method not implemented.')
-  }
 
   @column({ isPrimary: true })
   public id: number

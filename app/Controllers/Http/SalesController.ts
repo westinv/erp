@@ -26,11 +26,6 @@ export default class SalesController {
 
       const [item] = await Product.query().from(`${itemType}`).where('id', `${genericId}`)
 
-      /* const [item] = await Database
-      .from(`${itemType}`)
-      .where('id', `${genericId}`) */
-
-
       if(!item){
         return response.status(400).json({message: "Esqueceu de passar typeItem"})
       }
@@ -54,22 +49,18 @@ export default class SalesController {
       .where('id', genericId)
       .update({quantity: subtraction})
 
-
       if(kitId){
 
         const [kitProduct] = await KitProduct.query().where('kit_id', kitId)
-
-
         console.log(kitProduct)
         const teste = kitProduct.map(async (kitProduct) =>{
-          await Database
+        await Database
         .from('products')
         .where('id', kitProduct)
         .update({quantity: subtraction})
         })
         return teste
       }
-
 
       return sale;
     } catch (error) {
