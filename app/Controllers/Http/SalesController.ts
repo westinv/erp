@@ -50,23 +50,13 @@ export default class SalesController {
       .update({quantity: subtraction})
 
       if(kitId){
-
         const kitProduct = await KitProduct.query().where('kit_id', kitId)
-
-
-        const teste = kitProduct.map(async (product) =>{
-
-        const teste1 = product.$attributes.productId
-
-        console.log(teste1)
-
-        await Sale.query().from('products').where('id',teste1 ).update({quantity: subtraction})
-
-
+        const showKitProduct = kitProduct.map(async (product) =>{
+        const subtrationKit = product.$attributes.productId
+        await Sale.query().from('products').where('id',subtrationKit ).update({quantity: subtraction})
         })
-        return teste
+        return showKitProduct
       }
-
       return sale;
     } catch (error) {
       return response.status(400).json({message: error.message})
@@ -76,7 +66,6 @@ export default class SalesController {
 
     try {
       const sale = await Sale.all();
-
     return sale;
     } catch (error) {
       return response.status(400).json({message: error.message})
