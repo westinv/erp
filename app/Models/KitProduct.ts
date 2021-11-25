@@ -4,6 +4,10 @@ import Product from './Product'
 import Kit from './Kit'
 
 export default class KitProduct extends BaseModel {
+  static map(arg0: (productId: any) => Promise<void>) {
+    throw new Error('Method not implemented.')
+  }
+
   @column({ isPrimary: true })
   public id: number
 
@@ -20,11 +24,12 @@ export default class KitProduct extends BaseModel {
   public kitId: string
 
   @column()
-  public saleQuantity: number
+  public availableQuantity: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+  map: any
 }

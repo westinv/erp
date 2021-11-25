@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Database from '@ioc:Adonis/Lucid/Database'
 import History from 'App/Models/History'
+import Sale from 'App/Models/Sale'
 
 export default class HistoriesController {
   public async store ({ request, response }: HttpContextContract) {
@@ -71,9 +72,7 @@ export default class HistoriesController {
 
   public async showHistoryByPdvId ({ params}: HttpContextContract) {
     const {id} =  params
-    const listHistory = await Database
-    .from('histories')
-    .where('pdvs_id', `${id}`)
+    const listHistory = await Sale.query().from('sales').where('pdv_id', `${id}`)
 
     return listHistory
   }
@@ -81,33 +80,27 @@ export default class HistoriesController {
   public async showHistoryByClientId ({ params}: HttpContextContract) {
 
     const {id} =  params
-
-    const listHistory = await Database
-    .from('histories')
-    .where('client_id', `${id}`)
-
+    const listHistory = await Sale.query().from('sales').where('client_id', `${id}`)
      return listHistory
   }
 
   public async showHistoryByproductId ({ params}: HttpContextContract) {
 
       const {id} =  params
-
-      const listHistory = await Database
-      .from('histories')
-      .where('product_id', `${id}`)
-
+      const listHistory = await Sale.query().from('sales').where('product_id', `${id}`)
        return listHistory
   }
   public async showHistoryBySignaturesId ({ params}: HttpContextContract) {
 
       const {id} =  params
-
-      const listHistory = await Database
-      .from('histories')
-      .where('signatures_id', `${id}`)
-
+      const listHistory = await Sale.query().from('sales').where('signatures_id', `${id}`)
       return listHistory
   }
 
+  public async showHistoryByKitsId ({ params}: HttpContextContract) {
+
+    const {id} =  params
+    const listHistory = await Sale.query().from('sales').where('kit_id', `${id}`)
+    return listHistory
+}
 }

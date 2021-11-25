@@ -1,5 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Database from '@ioc:Adonis/Lucid/Database';
+import KitProduct from 'App/Models/KitProduct';
+import Product from 'App/Models/Product';
 import Sale from 'App/Models/Sale';
 
 export default class SalesController {
@@ -22,9 +24,11 @@ export default class SalesController {
         genericId = productId
       }
 
-      const [item] = await Database
+      const [item] = await Product.query().from(`${itemType}`).where('id', `${genericId}`)
+
+      /* const [item] = await Database
       .from(`${itemType}`)
-      .where('id', `${genericId}`)
+      .where('id', `${genericId}`) */
 
 
       if(!item){
@@ -53,17 +57,17 @@ export default class SalesController {
 
       if(kitId){
 
-        const [kit] = await Database
-        .from('kit_products')
-        .where('kit_id', genericId)
-        console.log(kit)
-        kit?.product_id.map(async (id) =>{
-        await Database
-        .from(`${itemType}`)
-        .where('id', id)
+        const [kitProduct] = await KitProduct.query().where('kit_id', kitId)
+
+
+        console.log(kitProduct)
+        const teste = kitProduct.map(async (kitProduct) =>{
+          await Database
+        .from('products')
+        .where('id', kitProduct)
         .update({quantity: subtraction})
         })
-
+        return teste
       }
 
 

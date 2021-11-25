@@ -5,7 +5,7 @@ import KitProduct from 'App/Models/KitProduct';
 
 interface IProducts{
   productsId?: number[],
-  saleQuantity?: number
+  availableQuantity?: number
 }
 
 export default class KitsController {
@@ -84,7 +84,7 @@ export default class KitsController {
   public async kitProduct({ request, response }: HttpContextContract){
     try {
       const kitId = request.header('kitId')
-      const { productsId, saleQuantity }: IProducts = request.body()
+      const { productsId, availableQuantity }: IProducts = request.body()
       if(!productsId ){
         return response.status(400).json({message: 'Passou errado!'})
       }
@@ -92,7 +92,7 @@ export default class KitsController {
         const kitProduct = await KitProduct.create({
           kitId,
           productId,
-          saleQuantity
+          availableQuantity
         });
         return kitProduct
       })
