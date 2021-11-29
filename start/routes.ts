@@ -43,6 +43,23 @@ Route.resource('/kit', 'KitsController').apiOnly()
 )//.middleware('auth:api,apiAccount')
 Route.post('/kitproduct', 'KitsController.kitProduct')
 Route.delete('/kitproduct/:id', 'KitsController.kitProductDelete')
+Route.put('/kitproduct/:id', 'KitsController.kitProductUpdate')
+
+Route.group(() =>
+Route.resource('/cost', 'CostsController').apiOnly()
+)//.middleware('auth:api,apiAccount')
+
+Route.group(() =>
+Route.resource('/fixedexpenses', 'FixedExpensesController').apiOnly()
+)//.middleware('auth:api,apiAccount')
+
+
+Route.group(() =>
+Route.resource('/costhistory', 'CostHistoriesController').apiOnly())
+Route.get('/costhistory/cost/pdv/:id', 'CostHistoriesController.showCostByPdvId')
+Route.get('/costhistory/fixed/pdv/:id', 'CostHistoriesController.showFixedRxpensesByPdvId')
+
+
 
 
 Route.get('/history/pdv/:id', 'HistoriesController.showHistoryByPdvId')

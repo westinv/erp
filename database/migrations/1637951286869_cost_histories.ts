@@ -1,22 +1,31 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class Costs extends BaseSchema {
-  protected tableName = 'costs'
+export default class CostHistories extends BaseSchema {
+  protected tableName = 'cost_histories'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id').primary()
-
-      table.string("description").notNullable()
-      table.float('price').notNullable()
-
+      table.increments('id')
       table
+          .integer('cost_id')
+          .unsigned()
+          .references('id')
+          .inTable('costs')
+          .onDelete('CASCADE')
+
+        table
+          .integer('fixed_expenses_id')
+          .unsigned()
+          .references('id')
+          .inTable('fixed_expenses')
+          .onDelete('CASCADE')
+
+          table
           .integer('pdv_id')
           .unsigned()
           .references('id')
           .inTable('pdvs')
           .onDelete('CASCADE')
-
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
