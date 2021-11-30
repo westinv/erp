@@ -12,10 +12,7 @@ export default class CostHistoriesController {
   }
   public async show({ params, response }: HttpContextContract) {
     try {
-
       const cost = await Cost.query().from('costs').where('id', params.id)
-
-
       return cost
     } catch (error) {
       return response.status(404).json({message: error.message})

@@ -7,11 +7,14 @@ export default class FixedExpensesController {
   public async store({request, response }: HttpContextContract) {
 
     try {
-      const { description, price, pdvId } = request.body()
+      const { description, price, pdvId, name, bank, transactionType } = request.body()
       const expenses  = await FixedExpense.create({
         description,
         price,
-        pdvId
+        pdvId,
+        name,
+        bank,
+        transactionType
       });
       return expenses;
     } catch (error) {

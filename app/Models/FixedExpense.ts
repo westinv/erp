@@ -13,6 +13,15 @@ export default class FixedExpense extends BaseModel {
   public pdvId: number
 
   @column()
+  public name: string
+
+  @column()
+  public bank: string
+
+  @column()
+  public transactionType: string
+
+  @column()
   public description: string
 
   @column()

@@ -116,14 +116,19 @@ export default class KitsController {
   public async kitProductUpdate({ params, response, request }: HttpContextContract){
     try {
       const findkitProduct = await KitProduct.find(params.id)
-        const dados = request.body()
+        const dados: IProducts = request.body()
 
         if (findkitProduct) {
+
+          const returnProduct = findkitProduct.map( async ()=> {
           findkitProduct.merge(dados);
           await findkitProduct.save();
-        }
 
-      return findkitProduct;
+          return returnProduct;
+        }
+          )}
+
+      /* return findkitProduct; */
       } catch (error) {
         return response.status(400).json({message: error.message})
       }

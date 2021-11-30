@@ -9,6 +9,10 @@ export default class FixedExpenses extends BaseSchema {
 
       table.string("description").notNullable()
       table.float('price').notNullable()
+      table.string('transaction_type').notNullable()
+      table.string('name').notNullable()
+      table.string('bank').notNullable()
+
 
       table
           .integer('pdv_id')
