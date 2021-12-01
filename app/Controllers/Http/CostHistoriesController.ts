@@ -10,7 +10,7 @@ export default class CostHistoriesController {
       return response.status(400).json({message: error.message})
     }
   }
-  public async show({ params, response }: HttpContextContract) {
+  public async show({ response }: HttpContextContract) {
     try {
       /* //const cost = await Cost.query().from('costs').where('id', params.id)
       return cost */
@@ -18,7 +18,7 @@ export default class CostHistoriesController {
       return response.status(404).json({message: error.message})
     }
   }
-  public async showCostByPdvId({ params, response }: HttpContextContract) {
+  public async showCostByPdvId({ response }: HttpContextContract) {
     try {
     /* const {id} =  params
     const listHistory = await Cost.query().from('costs').where('pdv_id', `${id}`)

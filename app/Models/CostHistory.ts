@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
-import Cost from './Cost'
+
 import FixedExpense from './FixedExpense'
 
 import Pdv from './Pdv'
@@ -9,8 +9,6 @@ export default class CostHistory extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @belongsTo(() => Cost)
-  public cost: BelongsTo<typeof Cost>
 
   @belongsTo(() => Pdv)
   public pvd: BelongsTo<typeof Pdv >
