@@ -5,13 +5,13 @@ export default class CostHistories extends BaseSchema {
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('id')
-      table
-          .integer('cost_id')
+      table.increments('id').primary()
+      /* table
+          .integer('release_id')
           .unsigned()
           .references('id')
-          .inTable('costs')
-          .onDelete('CASCADE')
+          .inTable('releases')
+          .onDelete('CASCADE') */
 
         table
           .integer('fixed_expenses_id')

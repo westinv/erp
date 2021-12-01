@@ -1,18 +1,21 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Cost from 'App/Models/Cost';
+import Release from 'App/Models/Release';
 
-export default class CostsController {
+export default class ReleasesController {
 
   public async store({request, response }: HttpContextContract) {
 
     try {
-      const { description, price, pdvId } = request.body()
-      const cost = await Cost.create({
+      const { description, price, pdvId, name, bank, transactionType } = request.body()
+      const expenses  = await Release.create({
         description,
         price,
-        pdvId
+        pdvId,
+        name,
+        bank,
+        transactionType
       });
-      return cost;
+      return expenses;
     } catch (error) {
       return response.status(400).json({message: error.message})
     }
@@ -20,8 +23,8 @@ export default class CostsController {
 
   public async index({response}: HttpContextContract) {
     try {
-      const cost = await Cost.all();
-      return cost;
+      const expenses = await Release.all();
+      return expenses;
     } catch (error) {
       return response.status(400).json({message: error.message})
     }
@@ -30,36 +33,36 @@ export default class CostsController {
 
   public async show({ params, response }: HttpContextContract) {
     try {
-      const cost = await Cost.find(params.id);
-      return cost;
+      const expenses = await Release.find(params.id);
+      return expenses;
     } catch (error) {
       return response.status(404).json({message: error.message})
     }
+
   }
 
   public async update({ request, params, response }: HttpContextContract) {
     try {
-      const findcost = await Cost.find(params.id);
+      const findExpenses = await Release.find(params.id);
       const dados = request.body()
 
-      if (findcost) {
-        findcost.merge(dados);
-        await findcost.save();
+      if (findExpenses) {
+        findExpenses.merge(dados);
+        await findExpenses.save();
       }
-      return findcost;
+
+      return findExpenses;
+
     } catch (error) {
       return response.status(404).json({message: error.message})
     }
   }
 
   public async destroy({ params, response }: HttpContextContract) {
-    const findcost = await Cost.find(params.id);
+    const findExpenses = await Release.find(params.id);
 
-    if(!findcost)
+    if(!findExpenses)
       return response.status(404);
-    await findcost.delete();
+    await findExpenses.delete();
   }
-
 }
-
-

@@ -1,7 +1,7 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class Costs extends BaseSchema {
-  protected tableName = 'costs'
+export default class Releases extends BaseSchema {
+  protected tableName = 'releases'
 
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
@@ -9,6 +9,10 @@ export default class Costs extends BaseSchema {
 
       table.string("description").notNullable()
       table.float('price').notNullable()
+      table.string('transaction_type').notNullable()
+      table.string('name').notNullable()
+      table.string('bank').notNullable()
+
 
       table
           .integer('pdv_id')

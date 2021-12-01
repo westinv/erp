@@ -46,7 +46,7 @@ Route.delete('/kitproduct/:id', 'KitsController.kitProductDelete')
 Route.put('/kitproduct/:id', 'KitsController.kitProductUpdate')
 
 Route.group(() =>
-Route.resource('/cost', 'CostsController').apiOnly()
+Route.resource('/releases', 'ReleasesController').apiOnly()
 )//.middleware('auth:api,apiAccount')
 
 Route.group(() =>
