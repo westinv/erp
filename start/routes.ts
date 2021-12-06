@@ -52,6 +52,7 @@ Route.resource('/releases', 'ReleasesController').apiOnly()
 Route.group(() =>
 Route.resource('/fixedexpenses', 'FixedExpensesController').apiOnly()
 )//.middleware('auth:api,apiAccount')
+Route.get('/fixedexpenses/pdv/:id', "FixedExpensesController.showHistoryByPdvId")
 
 
 Route.group(() =>

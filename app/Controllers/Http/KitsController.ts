@@ -7,7 +7,6 @@ interface IProducts{
   productsId?: number[],
   availableQuantity?: number
 }
-
 export default class KitsController {
   public async store({ request, response }: HttpContextContract) {
     try {
@@ -41,14 +40,7 @@ export default class KitsController {
   public async update({ request, params, response }: HttpContextContract) {
     try {
       const findkits = await Kit.find(params.id);
-      const dados = request.only([
-        'kit_description',
-        'price',
-        'name',
-        'shipping',
-        'discount',
-        'quantity'
-    ]);
+      const dados = request.body()
 
       if (findkits) {
         findkits.merge(dados);
@@ -59,7 +51,6 @@ export default class KitsController {
     } catch (error) {
       return response.status(400).json({message: error.message})
     }
-
   }
 
   public async destroy({ params, response }: HttpContextContract) {
@@ -116,19 +107,13 @@ export default class KitsController {
   public async kitProductUpdate({ params, response, request }: HttpContextContract){
     try {
       const findkitProduct = await KitProduct.find(params.id)
-        const dados: IProducts = request.body()
-
+        const dados = request.body()
+        console.log(findkitProduct)
         if (findkitProduct) {
-
-          const returnProduct = findkitProduct.map( async ()=> {
           findkitProduct.merge(dados);
           await findkitProduct.save();
-
-          return returnProduct;
+          return findkitProduct;
         }
-          )}
-
-      /* return findkitProduct; */
       } catch (error) {
         return response.status(400).json({message: error.message})
       }

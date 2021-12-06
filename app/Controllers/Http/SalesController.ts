@@ -1,5 +1,4 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Database from '@ioc:Adonis/Lucid/Database';
 import KitProduct from 'App/Models/KitProduct';
 import Product from 'App/Models/Product';
 import Sale from 'App/Models/Sale';
@@ -7,8 +6,7 @@ import Sale from 'App/Models/Sale';
 export default class SalesController {
   public async store({ request, response}: HttpContextContract) {
     try {
-      const {pdvId,clientId, kitId, productId, saleQuantity} = request.body()
-
+      const { pdvId,clientId, kitId, productId, saleQuantity }  = request.body()
       if(!kitId && !productId){
         return response.status(400).json({message: "Esqueceu de passar kitId ou productId"})
       }
@@ -44,11 +42,14 @@ export default class SalesController {
 
       const subtraction =  item.quantity - saleQuantity
 
-      await Database
-      .from(`${itemType}`)
-      .where('id', genericId)
-      .update({quantity: subtraction})
-
+      if(productId){
+        const findProduct = await Product.query().where('id', productId)
+        const showProduct = await findProduct.map(async (product) => {
+          const subtrationProduct = product.$attributes.id
+          await Sale.query().from('products').where('id',subtrationProduct ).update({quantity: subtraction})
+          return showProduct
+        })
+      }
       if(kitId){
         const kitProduct = await KitProduct.query().where('kit_id', kitId)
         const showKitProduct = kitProduct.map(async (product) =>{

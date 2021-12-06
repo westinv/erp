@@ -66,4 +66,17 @@ export default class FixedExpensesController {
       return response.status(404);
     await findExpenses.delete();
   }
+
+  public async showHistoryByPdvId ({ params}: HttpContextContract) {
+
+    //const listHistory = await FixedExpense.query().from('fixed_expenses').where('pdv_id', `${id}`)
+    const findExpenses = await FixedExpense.find(params.id);
+    if(findExpenses){
+
+    console.log(findExpenses.$attributes.bank)
+    }
+
+
+    return findExpenses
+  }
 }
