@@ -47,7 +47,7 @@ Route.post('/kitproduct', 'KitsController.kitProduct')
 Route.delete('/kitproduct/:id', 'KitsController.kitProductDelete')
 Route.put('/kitproduct/:id', 'KitsController.kitProductUpdate')
 Route.delete('/kitproduct/product/:id', 'KitsController.kitProductDeleteProduct')
-Route.get('/teste/:id', 'KitsController.FoundProducts')
+Route.get('/findproduct/:id', 'KitsController.FindProducts')
 
 Route.group(() =>
 Route.resource('/releases', 'ReleasesController').apiOnly()

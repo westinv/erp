@@ -133,7 +133,7 @@ export default class KitsController {
       }
   }
 
-  public async FoundProducts({ params}: HttpContextContract){
+  public async FindProducts({ params}: HttpContextContract){
     const {id} =  params
     const listHistory = await KitProduct.query().from('kit_products').where('kit_id', `${id}`).preload('product')
     return  listHistory
