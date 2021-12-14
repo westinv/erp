@@ -3,6 +3,7 @@ import { BaseModel, belongsTo, BelongsTo, column, hasMany, HasMany } from '@ioc:
 import Product from './Product'
 import SignatureClient from './SignatureClient'
 import Pvd from './Pdv'
+import Kit from './Kit'
 
 export default class Signature extends BaseModel {
   @column({ isPrimary: true })
@@ -17,6 +18,11 @@ export default class Signature extends BaseModel {
   @hasMany(()=> SignatureClient)
   public accounts: HasMany<typeof SignatureClient>
 
+  @belongsTo(() => Kit)
+  public kit: BelongsTo<typeof Kit>
+
+  @column()
+  public kitId: number
 
   @column()
   public productId: string

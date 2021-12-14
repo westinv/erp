@@ -13,12 +13,19 @@ export default class Signatures extends BaseSchema {
         .inTable('pdvs')
         .onDelete('CASCADE')
 
-     /*  table
+       /* table
         .integer('product_id')
         .unsigned()
         .references('id')
         .inTable('products')
-        .onDelete('CASCADE') */
+        .onDelete('CASCADE') 
+        
+        table
+          .integer('kit_id')
+          .unsigned()
+          .references('id')
+          .inTable('kits')
+          .onDelete('CASCADE') */
 
 
 

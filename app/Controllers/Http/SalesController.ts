@@ -3,66 +3,139 @@ import KitProduct from 'App/Models/KitProduct';
 import Product from 'App/Models/Product';
 import Sale from 'App/Models/Sale';
 
-export default class SalesController {
-  public async store({ request, response}: HttpContextContract) {
-    try {
-      const { pdvId,clientId, kitId, productId, saleQuantity }  = request.body()
-      if(!kitId && !productId){
-        return response.status(400).json({message: "Esqueceu de passar kitId ou productId"})
-      }
+interface IStoreKit{
+  kits?: {
+    array: [{
+    kitId: number,
+    quantity: number,
 
-      let itemType
-      let genericId
+    }],
+    pdvId: number,
+    clientId: number,
 
-      if(kitId){
-        itemType = 'kits'
-        genericId = kitId
-      }else if(productId){
-        itemType = 'products'
-        genericId = productId
-      }
 
-      const [item] = await Product.query().from(`${itemType}`).where('id', `${genericId}`)
-
-      if(!item){
-        return response.status(400).json({message: "Esqueceu de passar typeItem"})
-      }
-
-      if((item.quantity - saleQuantity) < 0){
-        return response.status(400).json({message: "A quantidade de produtos não tem no estoque"})
-      }
-
-      const sale = await Sale.create({
-        pdvId,
-        clientId,
-        kitId,
-        productId,
-        saleQuantity
-      });
-
-      const subtraction =  item.quantity - saleQuantity
-
-      if(productId){
-        const findProduct = await Product.query().where('id', productId)
-        const showProduct = await findProduct.map(async (product) => {
-          const subtrationProduct = product.$attributes.id
-          await Sale.query().from('products').where('id',subtrationProduct ).update({quantity: subtraction})
-          return showProduct
-        })
-      }
-      if(kitId){
-        const kitProduct = await KitProduct.query().where('kit_id', kitId)
-        const showKitProduct = kitProduct.map(async (product) =>{
-        const subtrationKit = product.$attributes.productId
-        await Sale.query().from('products').where('id',subtrationKit ).update({quantity: subtraction})
-        })
-        return showKitProduct
-      }
-      return sale;
-    } catch (error) {
-      return response.status(400).json({message: error.message})
-    }
   }
+}
+
+interface IStoreProduct{
+  products?: {
+    array: [{
+    productId: number,
+    quantity: number
+    }],
+    pdvId: number,
+    clientId: number,
+  }
+}
+
+
+/* interface ICArrinho{
+  kits?: {
+    array: [{
+    kitId?: number,
+    quantity?: number
+    }]
+  }
+
+  products: {
+    array: [{
+    productId: number,
+    quantity: number
+    }]
+  }
+} */
+
+export default class SalesController {
+
+public async StoreKitId({response,request }: HttpContextContract) {
+ try {
+  const { kits }: IStoreKit = request.body();
+   if(!kits){
+    return response.status(400).json({message: "Esqueceu de passar kitId"})
+  }
+
+  const foundIds = kits.array.map((kit)=>{
+    return kit.kitId
+  })
+  const foundQuantity = kits.array.map((kit)=>{
+    return kit.quantity
+  })
+  
+  const loadIds = foundIds[0]
+  const laodQuantity = foundQuantity[0]
+
+  const sale = await Sale.create({
+    quantity: laodQuantity,
+    kitId: loadIds,
+    pdvId: kits.pdvId,
+    clientId: kits.clientId
+  });
+
+  const kitProduct = await KitProduct.query().where('kit_id', loadIds)
+  const showKitProduct = kitProduct.map(async (product) =>{
+    const subtrationKit = product.$attributes.productId
+      const findQuantity = kits.array.map((kit)=>{
+        return kit.quantity
+      })
+      const [item] = await Product.query().where('id', subtrationKit)
+      const laodQuantity = foundQuantity[0]
+      if(!findQuantity){
+        return response.status(400).json({message: "Esqueceu de passar quantidade"})
+      }
+      const subtration = item.quantity - laodQuantity
+      await Sale.query().from('products').where('id',subtrationKit ).update({quantity: subtration})
+      return showKitProduct
+    })
+    return sale
+
+  } catch (error) {
+    return response.status(404).json({message: error.message})
+  }
+}
+
+ public async StoreProductId({response,request }: HttpContextContract) {
+  try {
+
+  const {products}: IStoreProduct = request.body();
+  if(!products){
+   return response.status(400).json({message: "Esqueceu de passar productId"})
+ }
+ const foundIds = products.array.map((product)=>{
+  return product.productId
+  })
+
+  const foundQuantity = products.array.map((product)=>{
+  return product.quantity
+  })
+
+  const loadIds = foundIds[0]
+  const laodQuantity = foundQuantity[0]
+
+  const sale = await Sale.create({
+    clientId: products.clientId,
+    pdvId: products.pdvId,
+    productId: loadIds,
+    quantity: laodQuantity
+  });
+
+  const findProduct = await Product.query().where('id', loadIds)
+  const showProduct = findProduct.map(async (product) => {
+  const subtrationProduct = product.$attributes.id
+  const findQuantity = products.array.find(teste => teste.productId === subtrationProduct )
+  if(!findQuantity){
+    return response.status(400).json({message: "Esqueceu de passar quantidade"})
+  }
+  const subtration = product.$attributes.quantity - findQuantity?.quantity
+  await Sale.query().from('products').where('id', subtrationProduct ).update({quantity: subtration})
+  return showProduct
+  })
+  return sale
+}
+  catch (error) {
+    return response.status(404).json({message: error.message})
+  }
+}
+
   public async index({response}: HttpContextContract) {
 
     try {

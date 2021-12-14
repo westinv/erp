@@ -3,10 +3,12 @@ import Kit from 'App/Models/Kit';
 import KitProduct from 'App/Models/KitProduct';
 
 
+
 interface IProducts{
   productsId?: number[],
   availableQuantity?: number
 }
+
 export default class KitsController {
   public async store({ request, response }: HttpContextContract) {
     try {
@@ -28,8 +30,7 @@ export default class KitsController {
 
   public async index({response}: HttpContextContract) {
     try {
-      const kits = await Kit.all();
-
+      const kits = await Kit.all()
       return kits;
     } catch (error) {
       return response.status(400).json({message: error.message})
@@ -108,7 +109,6 @@ export default class KitsController {
     try {
       const findkitProduct = await KitProduct.find(params.id)
         const dados = request.body()
-        console.log(findkitProduct)
         if (findkitProduct) {
           findkitProduct.merge(dados);
           await findkitProduct.save();
@@ -117,5 +117,25 @@ export default class KitsController {
       } catch (error) {
         return response.status(400).json({message: error.message})
       }
+  }
+
+  public async kitProductDeleteProduct({ params, response }: HttpContextContract){
+    try {
+      const findkitProduct = await KitProduct.find(params.id)
+        console.log(findkitProduct)
+        if (findkitProduct) {
+
+          await findkitProduct.$attributes.productId.delete()
+          return findkitProduct;
+        }
+      } catch (error) {
+        return response.status(400).json({message: error.message})
+      }
+  }
+
+  public async FoundProducts({ params}: HttpContextContract){
+    const {id} =  params
+    const listHistory = await KitProduct.query().from('kit_products').where('kit_id', `${id}`).preload('product')
+    return  listHistory
   }
 }

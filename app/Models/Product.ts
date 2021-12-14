@@ -46,6 +46,9 @@ export default class Product extends BaseModel {
   @column()
   public quantity: number
 
+  
+
+
 
 
   @column.dateTime({ autoCreate: true })

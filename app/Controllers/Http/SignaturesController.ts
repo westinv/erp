@@ -6,18 +6,14 @@ export default class SignaturesController {
   public async store({ request, response }: HttpContextContract) {
 
     try {
-
-      const pdvId = request.header('pdvId')
-      const productId = request.header('productId')
-      const { name, price, duration } = request.body()
-
+      const { name, price, duration, kitId, pdvId, productId } = request.body()
       const signature = await Signature.create({
         name,
         price,
         duration,
         pdvId,
         productId,
-
+        kitId
       });
 
       return signature;
@@ -78,5 +74,7 @@ export default class SignaturesController {
       return response.status(404);
     await findsignature.delete();
   }
+
+
 
 }

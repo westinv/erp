@@ -7,6 +7,9 @@ export default class Kit extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @hasMany(()=> KitProduct)
+  public kitProduct: HasMany<typeof KitProduct>
+
   @column()
   public description: string
 
@@ -27,14 +30,6 @@ export default class Kit extends BaseModel {
 
   @column()
   public saleId: number
-
-
-
-  @hasMany(()=>KitProduct )
-  public kitProduct: HasMany<typeof KitProduct>
-
-
-
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

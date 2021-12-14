@@ -11,6 +11,7 @@ export default class Products extends BaseSchema {
       table.float('price').notNullable()
       table.float ('discount')
       table.float('shipping')
+
       table.float('quantity').notNullable()
 
       table

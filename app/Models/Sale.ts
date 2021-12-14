@@ -22,16 +22,18 @@ export default class Sale extends BaseModel {
   public kit: BelongsTo<typeof Kit>
 
   @column()
+  public kitId: number
+
+  @column()
   public pdvId: number
 
   @column()
-  public saleQuantity: number
+  public quantity: number
 
   @column()
   public clientId: number
 
-  @column()
-  public kitId: number
+  
 
   @column()
   public productId: number

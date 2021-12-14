@@ -1,12 +1,22 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Product from 'App/Models/Product';
 
+interface IProducts{
+  description?: string,
+  price?: number,
+  name?: string,
+  shipping?: number,
+  discount?: number,
+  quantity?: number,
+  pdvId?: number,
+}
 export default class ProductsController {
 
   public async store({ request, response }: HttpContextContract) {
     try {
       const pdvId = request.header('pdvId')
-      const { description, price, name, shipping, discount,quantity } = request.body();
+      const { description, price, name, shipping, discount,quantity }: IProducts = request.body();
+
       const products = await Product.create({
         description,
         price,
