@@ -134,19 +134,16 @@ export default class SalesController {
         return kit.quantity
       })
     
-      const loadkitIds = foundKitIds[0]
-      const laodkitQuantity = foundkitQuantity[0]
-
-      const loadIds = foundIds[0]
-      const laodQuantity = foundQuantity[0]
-
-    
       for(let i = 0 ; i< products.array.length; i++){
+      const loadIds = foundIds[i]
+      const laodQuantity = foundQuantity[i]
       StoreProductId(pdvId,laodQuantity, loadIds, clientId)
       }
 
       for( let j = 0 ; j < kits.array.length; j++){
-      StoreKitId( pdvId,laodkitQuantity, loadkitIds, clientId)
+      const loadkitIds = foundKitIds[j]
+      const laodkitQuantity = foundkitQuantity[j]
+      StoreKitId( loadkitIds,laodkitQuantity, pdvId, clientId)
       }
     }   
 
