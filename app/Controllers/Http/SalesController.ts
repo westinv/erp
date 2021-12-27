@@ -3,42 +3,16 @@ import KitProduct from 'App/Models/KitProduct';
 import Product from 'App/Models/Product';
 import Sale from 'App/Models/Sale';
 
-interface IStoreKit{
-  kits?: {
-    array: [{
-    kitId: number,
-    quantity: number,
-
-    }],
-    pdvId: number,
-    clientId: number,
-
-
-  }
-}
-
-interface IStoreProduct{
-  products?: {
-    array: [{
-    productId: number,
-    quantity: number
-    }],
-    pdvId: number,
-    clientId: number,
-  }
-}
-
-
 interface ICArrinho{
   kits?: {
     array: [{
-    kitId?: number,
+    kitId?: number[],
     quantity?: number
     }]
   },
   products?: {
     array: [{
-    productId: number,
+    productId: number[],
     quantity: number
     }]
   },
@@ -46,46 +20,49 @@ interface ICArrinho{
     clientId?: number,
   }
 
+  async function StoreKitId(kitId, quantity, pdvId, clientId) {
+    
+    const sale = await Sale.create({
+      quantity: quantity,
+      kitId: kitId,
+      pdvId: pdvId,
+      clientId: clientId,
+    });
+  
+    const kitProduct = await KitProduct.query().where('kit_id', kitId)
+    const showKitProduct = kitProduct.map(async (product) =>{
+      const subtrationKit = product.$attributes.productId
+        const [item] = await Product.query().where('id', subtrationKit)
+        const subtration = item.quantity - quantity
+        await Sale.query().from('products').where('id',subtrationKit ).update({quantity: subtration})
+        return showKitProduct
+      })
+      return sale
+  }
+  
+  async function StoreProductId(pdvId ,quantity, productId , clientId) {
+
+    const sale = await Sale.create({
+      clientId: clientId,
+      pdvId: pdvId,
+      productId:  productId,
+      quantity: quantity
+    });
+
+    const findProduct = await Product.query().where('id', productId)
+    const showProduct = findProduct.map(async (product) => {
+    const subtrationProduct = product.$attributes.id
+    const subtration = product.$attributes.quantity - quantity
+    await Sale.query().from('products').where('id', subtrationProduct ).update({quantity: subtration})
+    return showProduct
+    })
+    return sale
+    
+  }
 
 export default class SalesController {
 
-public async StoreKitId(kitId: number, quantity: number, pdvId:number, clientId: number) {
- 
- 
-  const sale = await Sale.create({
-    quantity: quantity,
-    kitId: kitId,
-    pdvId: pdvId,
-    clientId: clientId,
-  });
 
-  const kitProduct = await KitProduct.query().where('kit_id', kitId)
-  const showKitProduct = kitProduct.map(async (product) =>{
-    const subtrationKit = product.$attributes.productId
-      const [item] = await Product.query().where('id', subtrationKit)
-      const subtration = item.quantity - quantity
-      await Sale.query().from('products').where('id',subtrationKit ).update({quantity: subtration})
-      return showKitProduct
-    })
-    return sale
-}
-
- public async StoreProductId( productId : number, quantity: number, pdvId:number, clientId: number) {
-  const sale = await Sale.create({
-    clientId: clientId,
-    pdvId: pdvId,
-    productId:  productId,
-    quantity: quantity
-  });
-  const findProduct = await Product.query().where('id', productId)
-  const showProduct = findProduct.map(async (product) => {
-  const subtrationProduct = product.$attributes.id
-  const subtration = product.$attributes.quantity - quantity
-  await Sale.query().from('products').where('id', subtrationProduct ).update({quantity: subtration})
-  return showProduct
-  })
-  return sale
-}
   public async index({response}: HttpContextContract) {
 
     try {
@@ -132,29 +109,45 @@ public async StoreKitId(kitId: number, quantity: number, pdvId:number, clientId:
 
   public async carrinho({response,request }: HttpContextContract){
 
-    const {kits, products} : ICArrinho = request.body()
+    const {kits, products, pdvId, clientId} : ICArrinho = request.body()
+
+    if(!pdvId || !clientId){
+      return response.status(400).json({message: "Esqueceu de passar kitId ou productId"})
+    }
 
     if(!kits || !products){
       return response.status(400).json({message: "Esqueceu de passar kitId ou productId"})
     }
+ 
+    const foundIds = products.array.map((product)=>{
+      return product.productId
+      })
     
-     
-    for(let kit of kits.array){
+      const foundQuantity = products.array.map((product)=>{
+      return product.quantity
+      })
 
-      
+      const foundKitIds = kits.array.map((kit)=>{
+        return kit.kitId
+      })
+      const foundkitQuantity = kits.array.map((kit)=>{
+        return kit.quantity
+      })
+    
+      const loadkitIds = foundKitIds[0]
+      const laodkitQuantity = foundkitQuantity[0]
 
+      const loadIds = foundIds[0]
+      const laodQuantity = foundQuantity[0]
 
-      
+    
+      for(let i = 0 ; i< products.array.length; i++){
+      StoreProductId(pdvId,laodQuantity, loadIds, clientId)
+      }
 
-
-
-
+      for( let j = 0 ; j < kits.array.length; j++){
+      StoreKitId( pdvId,laodkitQuantity, loadkitIds, clientId)
+      }
     }   
 
-    
-
-    //console.log(kits,products)
   }
-
-  
-}

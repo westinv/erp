@@ -36,11 +36,9 @@ Route.resource('/signature', 'SignaturesController').apiOnly()
 Route.post('/signatureids','SignaturesController.sigantureIds')
 Route.delete('/signuteids/:id', 'SignaturesController.signatureDeleteProduct')
 Route.put('/signature/products/:id', "SignaturesController.signatureUpdateProdructs" )
-/* Route.group(() =>
+ Route.group(() =>
 Route.resource('/sale', 'SalesController').apiOnly()
-).middleware('auth:api,apiAccount') */
-Route.post('/sale', 'SalesController.StoreKitId')
-Route.post('/saleproduct', 'SalesController.StoreProductId')
+)//.middleware('auth:api,apiAccount')
 Route.post('/carrinho','SalesController.carrinho')
 
 Route.group(() =>
