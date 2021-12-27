@@ -106,12 +106,12 @@ export default class KitsController {
   public async kitProductUpdate({ params, response, request }: HttpContextContract) {
     try {
       const findkitProduct = await Kit.query().where('id', params.id).preload('kitProduct')
-      let { productId } = request.body()
+      const { productId } = request.body()
       const find = findkitProduct[0].$preloaded.kitProduct
       if (Array.isArray(find)) {
         for (let i = 0; i < find.length; i++) {
-          let findProducts = find[i].$attributes.productId
-          let updateProductId = productId[i]
+          const findProducts = find[i].$attributes.productId
+          const updateProductId = productId[i]
           await KitProduct.query().from('kit_products').where('product_id', findProducts).update({ productId: updateProductId })
         }
       }

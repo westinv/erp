@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column} from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Product from './Product'
 import Kit from './Kit'
 
@@ -26,7 +26,7 @@ export default class KitProduct extends BaseModel {
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
-  map: any
+  /*  @column.dateTime({ autoCreate: true, autoUpdate: true })
+   public updatedAt: DateTime
+   map: any */
 }
