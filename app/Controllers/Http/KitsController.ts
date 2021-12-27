@@ -3,10 +3,8 @@ import Kit from 'App/Models/Kit';
 import KitProduct from 'App/Models/KitProduct';
 
 
-
-interface IProducts{
-  productsId?: number[],
-  availableQuantity?: number
+interface IProducts {
+  productId?: number[],
 }
 
 export default class KitsController {
@@ -24,16 +22,16 @@ export default class KitsController {
 
       return kits;
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
     }
   }
 
-  public async index({response}: HttpContextContract) {
+  public async index({ response }: HttpContextContract) {
     try {
       const kits = await Kit.all()
       return kits;
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
     }
 
   }
@@ -48,16 +46,16 @@ export default class KitsController {
         await findkits.save();
       }
 
-    return findkits;
+      return findkits;
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
     }
   }
 
   public async destroy({ params, response }: HttpContextContract) {
     const findkits = await Kit.find(params.id);
 
-    if(!findkits)
+    if (!findkits)
       return response.status(404);
     await findkits.delete();
   }
@@ -69,73 +67,75 @@ export default class KitsController {
       await kits?.load('kitProduct', loader => loader.preload('product'))
       return kits
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
     }
   }
 
-  public async kitProduct({ request, response }: HttpContextContract){
+  public async kitProduct({ request, response }: HttpContextContract) {
     try {
       const kitId = request.header('kitId')
-      const { productsId, availableQuantity }: IProducts = request.body()
-      if(!productsId ){
-        return response.status(400).json({message: 'Passou errado!'})
+      const { productId }: IProducts = request.body()
+      if (!productId) {
+        return response.status(400).json({ message: 'Passou errado!' })
       }
-      const returnProduct = productsId.map( async (productId)=> {
+      const returnProduct = productId.map(async (productId) => {
         const kitProduct = await KitProduct.create({
           kitId,
           productId,
-          availableQuantity
+
         });
         return kitProduct
       })
       return returnProduct
     }
     catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
     }
   }
-  public async kitProductDelete({ params, response }: HttpContextContract){
+  public async kitProductDelete({ params, response }: HttpContextContract) {
     try {
       const findkitProduct = await KitProduct.find(params.id)
-        if(!findkitProduct)
-          return response.status(404)
-          await findkitProduct.delete()
+      if (!findkitProduct)
+        return response.status(404)
+      await findkitProduct.delete()
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
+    }
+  }
+  
+  public async kitProductUpdate({ params, response, request }: HttpContextContract) {
+    try {
+      const findkitProduct = await Kit.query().where('id', params.id).preload('kitProduct')
+      let { productId } = request.body()
+      const find = findkitProduct[0].$preloaded.kitProduct
+      if (Array.isArray(find)) {
+        for (let i = 0; i < find.length; i++) {
+          let findProducts = find[i].$attributes.productId
+          let updateProductId = productId[i]
+          await KitProduct.query().from('kit_products').where('product_id', findProducts).update({ productId: updateProductId })
+        }
+      }
+    } catch (error) {
+      return response.status(400).json({ message: error.message })
     }
   }
 
-  public async kitProductUpdate({ params, response, request }: HttpContextContract){
+  public async kitProductDeleteProduct({ params, response }: HttpContextContract) {
     try {
       const findkitProduct = await KitProduct.find(params.id)
-        const dados = request.body()
-        if (findkitProduct) {
-          findkitProduct.merge(dados);
-          await findkitProduct.save();
-          return findkitProduct;
-        }
-      } catch (error) {
-        return response.status(400).json({message: error.message})
+      if (findkitProduct) {
+
+        await findkitProduct.$attributes.productId.delete()
+        return findkitProduct;
       }
+    } catch (error) {
+      return response.status(400).json({ message: error.message })
+    }
   }
 
-  public async kitProductDeleteProduct({ params, response }: HttpContextContract){
-    try {
-      const findkitProduct = await KitProduct.find(params.id)
-        console.log(findkitProduct)
-        if (findkitProduct) {
-
-          await findkitProduct.$attributes.productId.delete()
-          return findkitProduct;
-        }
-      } catch (error) {
-        return response.status(400).json({message: error.message})
-      }
-  }
-
-  public async FindProducts({ params}: HttpContextContract){
-    const {id} =  params
+  public async FindProducts({ params }: HttpContextContract) {
+    const { id } = params
     const listHistory = await KitProduct.query().from('kit_products').where('kit_id', `${id}`).preload('product')
-    return  listHistory
+    return listHistory
   }
 }

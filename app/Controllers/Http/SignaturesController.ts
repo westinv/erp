@@ -1,19 +1,27 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Signature from 'App/Models/Signature';
+import SignatureCreate from 'App/Models/SignatureCreate';
+
+interface Iids{
+  productsId?: number[],
+  signatureId?: string
+
+}
 
 export default class SignaturesController {
 
   public async store({ request, response }: HttpContextContract) {
 
     try {
-      const { name, price, duration, kitId, pdvId, productId } = request.body()
+      const { name, price, shipping, pdvId,note, discount, clientCode } = request.body()
       const signature = await Signature.create({
         name,
         price,
-        duration,
         pdvId,
-        productId,
-        kitId
+        note,
+        shipping,
+        discount,
+        clientCode
       });
 
       return signature;
@@ -39,22 +47,17 @@ export default class SignaturesController {
 
     try {
       const signature = await Signature.find(params.id);
-      await signature?.load('pdv')
+      await signature?.load('signatureIds', loader => loader.preload('product'))
       return signature;
 
     } catch (error) {
       return response.status(404).json({message: error.message})
     }
   }
-
   public async update({ request, params, response }: HttpContextContract) {
     try {
       const findsignature = await Signature.find(params.id);
-    const dados = request.only([
-      'name',
-      'price',
-      'duration'
-    ]);
+    const dados = request.body()
 
     if (findsignature) {
       findsignature.merge(dados);
@@ -75,6 +78,55 @@ export default class SignaturesController {
     await findsignature.delete();
   }
 
+  public async sigantureIds({ request, response }: HttpContextContract){
+    try {
+      const {productsId, signatureId}: Iids = request.body()
+      if(!productsId){
+        return response.status(400).json({message: 'Passou errado!'})
+      }
+      const returnids = productsId.map( async (productId)=> {
+        const todosIds = await SignatureCreate.create({
+          productId,
+          signatureId
+        });
+        return todosIds
+      })
+      return returnids
+    } catch (error) {
+      return response.status(404).json({message: error.message})
+    }
+  }
 
+  public async signatureDeleteProduct({ params, response }: HttpContextContract){
+
+    try {
+      const findassing = await SignatureCreate.find(params.id)
+        if(!findassing)
+          return response.status(404)
+          await findassing.delete()
+    } catch (error) {
+      return response.status(400).json({message: error.message})
+    }
+  }
+
+
+  public async signatureUpdateProdructs({ params, request,response }: HttpContextContract){
+    try {
+      const findSignatureProduct = await Signature.query().where('id', params.id).preload('signatureIds')
+      let { productId } = request.body()
+      
+      const find = findSignatureProduct[0].$preloaded.signatureIds
+
+      if (Array.isArray(find)) {
+        for (let i = 0; i < find.length; i++) {
+          let findProducts = find[i].$attributes.productId
+          let updateProductId = productId[i]
+          await SignatureCreate.query().from('signature_creates').where('product_id', findProducts).update({ productId: updateProductId })
+        }
+      }
+    } catch (error) {
+      return response.status(400).json({ message: error.message })
+    }
+  }
 
 }

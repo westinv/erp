@@ -6,33 +6,28 @@ export default class Signatures extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
+      table.string('name')
+      table.float('price')
+      table.float('shipping')
+      table.string('note')
+      table.float('discount')
+      table.string('client_code')
+
       table
-        .integer('pdvs_id')
+        .integer('pdv_id')
         .unsigned()
         .references('id')
         .inTable('pdvs')
         .onDelete('CASCADE')
 
-       /* table
-        .integer('product_id')
+        table
+        .integer('client_id')
         .unsigned()
         .references('id')
-        .inTable('products')
-        .onDelete('CASCADE') 
+        .inTable('clients')
+        .onDelete('CASCADE')
+
         
-        table
-          .integer('kit_id')
-          .unsigned()
-          .references('id')
-          .inTable('kits')
-          .onDelete('CASCADE') */
-
-
-
-
-      table.string('name')
-      table.string('price')
-      table.string('duration')
 
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })

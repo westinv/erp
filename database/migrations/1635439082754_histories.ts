@@ -28,12 +28,12 @@ export default class Histories extends BaseSchema {
           .inTable('products')
           .onDelete('CASCADE')
 
-        table
+        /* table
           .integer('signatures_id')
           .unsigned()
           .references('id')
           .inTable('signatures')
-          .onDelete('CASCADE')
+          .onDelete('CASCADE') */
 
 
       /**

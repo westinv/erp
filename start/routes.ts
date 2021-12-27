@@ -33,12 +33,15 @@ Route.get('/product/pdv/id', 'ProductsController.indexByPdvId')
 Route.group(() =>
 Route.resource('/signature', 'SignaturesController').apiOnly()
 )//.middleware('auth:api,apiAccount')
-
+Route.post('/signatureids','SignaturesController.sigantureIds')
+Route.delete('/signuteids/:id', 'SignaturesController.signatureDeleteProduct')
+Route.put('/signature/products/:id', "SignaturesController.signatureUpdateProdructs" )
 /* Route.group(() =>
 Route.resource('/sale', 'SalesController').apiOnly()
 ).middleware('auth:api,apiAccount') */
 Route.post('/sale', 'SalesController.StoreKitId')
 Route.post('/saleproduct', 'SalesController.StoreProductId')
+Route.post('/carrinho','SalesController.carrinho')
 
 Route.group(() =>
 Route.resource('/kit', 'KitsController').apiOnly()

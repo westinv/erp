@@ -1,9 +1,8 @@
 import { DateTime } from 'luxon'
 import { BaseModel, belongsTo, BelongsTo, column, hasMany, HasMany } from '@ioc:Adonis/Lucid/Orm'
-import Product from './Product'
 import SignatureClient from './SignatureClient'
 import Pvd from './Pdv'
-import Kit from './Kit'
+import SignatureCreate from './SignatureCreate'
 
 export default class Signature extends BaseModel {
   @column({ isPrimary: true })
@@ -12,32 +11,37 @@ export default class Signature extends BaseModel {
   @belongsTo(() => Pvd)
   public pdv: BelongsTo<typeof Pvd>
 
-  @belongsTo(() => Product)
-  public product: BelongsTo<typeof Product>
+  @hasMany(() => SignatureCreate)
+  public signatureIds: HasMany<typeof SignatureCreate>
 
   @hasMany(()=> SignatureClient)
   public accounts: HasMany<typeof SignatureClient>
-
-  @belongsTo(() => Kit)
-  public kit: BelongsTo<typeof Kit>
-
-  @column()
-  public kitId: number
-
-  @column()
-  public productId: string
 
   @column()
   public pdvId: string
 
   @column()
+  public signatureId: number
+
+  @column()
   public name: string
 
   @column()
-  public price: string
+  public price: number
 
   @column()
-  public duration: string
+  public note: string
+
+  @column()
+  public clientCode : string
+  
+  @column()
+  public discount : number
+
+  @column()
+  public shipping : number
+
+
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
