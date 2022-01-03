@@ -102,7 +102,7 @@ export default class KitsController {
       return response.status(400).json({ message: error.message })
     }
   }
-  
+
   public async kitProductUpdate({ params, response, request }: HttpContextContract) {
     try {
       const findkitProduct = await Kit.query().where('id', params.id).preload('kitProduct')

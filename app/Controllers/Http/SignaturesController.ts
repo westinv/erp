@@ -85,6 +85,9 @@ export default class SignaturesController {
         return response.status(400).json({ message: 'Passou errado!' })
       }
       const returnids = productsId.map(async (productId) => {
+
+
+
         const todosIds = await SignatureCreate.create({
           productId,
           signatureId
@@ -108,7 +111,6 @@ export default class SignaturesController {
       return response.status(400).json({ message: error.message })
     }
   }
-
 
   public async signatureUpdateProdructs({ params, request, response }: HttpContextContract) {
     try {
