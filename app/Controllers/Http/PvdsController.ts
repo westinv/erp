@@ -74,7 +74,7 @@ export default class PdvsController {
     }
 
   }
-  public async showlistclient({ auth, response }: HttpContextContract) {
+  public async showlistclient({ auth }: HttpContextContract) {
     if (auth.user instanceof Salesman) {
       const pdv = await Pvd.query().where('salesman_id', auth.user.id)
       return pdv
