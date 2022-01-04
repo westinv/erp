@@ -21,6 +21,8 @@ Route.group(() =>
   Route.resource('/client', 'ClientsController').apiOnly(),
 ).middleware('auth:api,apiAccount')
 Route.get('/client/pdv/id', 'ClientsController.indexByPdvId')
+Route.get('/listclient', 'ClientsController.showlistclient').middleware('auth:api,apiAccount')
+
 
 Route.group(() =>
   Route.resource('/signaturecleint', 'SignatureClientsController').apiOnly()

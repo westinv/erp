@@ -3,22 +3,37 @@ import { BaseModel, BelongsTo, belongsTo, column, HasMany, hasMany } from '@ioc:
 import History from './History'
 import SignatureClient from './SignatureClient'
 import Pvd from './Pdv'
+import Salesman from './Salesman'
+import Account from './Account'
 
 export default class Client extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @belongsTo (()=> Pvd)
+  @belongsTo(() => Pvd)
   public pdv: BelongsTo<typeof Pvd>
 
-  @hasMany(()=> History)
+  @belongsTo(() => Account)
+  public account: BelongsTo<typeof Account>
+
+  @belongsTo(() => Salesman)
+  public salesman: BelongsTo<typeof Salesman>
+
+
+  @hasMany(() => History)
   public history: HasMany<typeof History>
 
-  @hasMany(()=> SignatureClient)
+  @hasMany(() => SignatureClient)
   public signatureClient: HasMany<typeof SignatureClient>
 
   @column()
-  public pdvId: string
+  public pdvId: number
+
+  @column()
+  public accountId: number
+
+  @column()
+  public salesmanId: number
 
   @column()
   public name: string
