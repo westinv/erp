@@ -3,81 +3,89 @@ import History from 'App/Models/History'
 import Sale from 'App/Models/Sale'
 
 export default class HistoriesController {
-  
-  public async index ({response}: HttpContextContract) {
-    try {
-    const number = await History.all()
 
-    return number
+  public async index({ response }: HttpContextContract) {
+    try {
+      const number = await History.all()
+
+      return number
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
     }
 
   }
 
-  public async show ({ params, response }: HttpContextContract) {
+  public async show({ params, response }: HttpContextContract) {
     try {
-    const number = await History.find(params.id)
-    return number
+      const number = await History.find(params.id)
+      return number
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
     }
   }
 
-  public async update ({ request, params, response }: HttpContextContract) {
+  public async update({ request, params, response }: HttpContextContract) {
     try {
+      const findnumber = await History.find(params.id)
+      const dados = request.only(['payment'])
+
+      if (findnumber) {
+        findnumber.merge(dados)
+        await findnumber.save()
+      }
+
+      return findnumber
+    } catch (error) {
+      return response.status(400).json({ message: error.message })
+    }
+  }
+
+  public async destroy({ params, response }: HttpContextContract) {
     const findnumber = await History.find(params.id)
-    const dados = request.only(['payment'])
-
-    if (findnumber) {
-      findnumber.merge(dados)
-      await findnumber.save()
-    }
-
-    return findnumber
-    } catch (error) {
-      return response.status(400).json({message: error.message})
-    }
-  }
-
-  public async destroy ({ params,  response }: HttpContextContract) {
-    const findnumber = await History.find(params.id)
-    if(!findnumber)
+    if (!findnumber)
       return response.status(404);
     await findnumber.delete()
   }
 
-  public async showHistoryByPdvId ({ params}: HttpContextContract) {
-    const {id} =  params
+  public async showHistoryByPdvId({ params }: HttpContextContract) {
+    const { id } = params
     const listHistory = await Sale.query().from('sales').where('pdv_id', `${id}`).preload('product')
 
     return listHistory
   }
 
-  public async showHistoryByClientId ({ params}: HttpContextContract) {
+  public async showHistoryByClientId({ params }: HttpContextContract) {
 
-    const {id} =  params
+    const { id } = params
     const listHistory = await Sale.query().from('sales').where('client_id', `${id}`).preload('product')
-     return listHistory
+    return listHistory
   }
 
-  public async showHistoryByproductId ({ params}: HttpContextContract) {
+  public async showHistoryByproductId({ params }: HttpContextContract) {
 
-      const {id} =  params
-      const listHistory = await Sale.query().from('sales').where('product_id', `${id}`).preload('product')
-       return listHistory
+    const { id } = params
+    const listHistory = await Sale.query().from('sales').where('product_id', `${id}`).preload('product')
+    return listHistory
   }
-  public async showHistoryBySignaturesId ({ params}: HttpContextContract) {
+  public async showHistoryBySignaturesId({ params }: HttpContextContract) {
 
-      const {id} =  params
-      const listHistory = await Sale.query().from('sales').where('signatures_id', `${id}`).preload('product')
-      return listHistory
+    const { id } = params
+    const listHistory = await Sale.query().from('sales').where('signatures_id', `${id}`).preload('product')
+    return listHistory
   }
 
-  public async showHistoryByKitsId ({ params}: HttpContextContract) {
+  public async showHistoryByKitsId({ params }: HttpContextContract) {
 
-    const {id} =  params
+    const { id } = params
     const listHistory = await Sale.query().from('sales').where('kit_id', `${id}`).preload('kit')
     return listHistory
-}
+  }
+
+  /* public async filtrosbydata({ params }: HttpContextContract) {
+
+    const {teste} = params
+
+    const results = await History.query().where()
+  } */
+
 }

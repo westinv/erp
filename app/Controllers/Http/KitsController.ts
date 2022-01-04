@@ -125,8 +125,7 @@ export default class KitsController {
       const findkitProduct = await KitProduct.find(params.id)
       if (findkitProduct) {
 
-        await findkitProduct.$attributes.productId.delete()
-        return findkitProduct;
+        await findkitProduct.delete()
       }
     } catch (error) {
       return response.status(400).json({ message: error.message })
