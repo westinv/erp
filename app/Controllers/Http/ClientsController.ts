@@ -6,10 +6,12 @@ import Salesman from 'App/Models/Salesman';
 
 export default class ClientsController {
 
-  public async store({ request, response }: HttpContextContract) {
+  public async store({ request, response, auth }: HttpContextContract) {
     try {
+      if (!(auth.user instanceof Salesman) && !(auth.user instanceof Account))
+        return response.status(403);
 
-      const { name, address, city, number, state, district, cep, complement, phone, pdvId, accountId, salesmanId } = request.body()
+      const { name, address, city, number, state, district, cep, complement, phone, pdvId } = request.body()
       const client = await Client.create({
         name,
         address,
@@ -21,9 +23,8 @@ export default class ClientsController {
         phone,
         number,
         pdvId,
-        accountId,
-        salesmanId
-
+        accountId: auth.user instanceof Account ? auth.user.id : undefined,
+        salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user.salesmanId,
       })
       return client;
     } catch (error) {
@@ -89,6 +90,7 @@ export default class ClientsController {
       const pdv = await Client.query().where('salesman_id', auth.user.id)
       return pdv
     } else if (auth.user instanceof Account) {
+
       const pdv = await Client.query().where('account_id', auth.user.id)
       return pdv
     }
