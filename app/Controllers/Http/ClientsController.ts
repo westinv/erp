@@ -90,7 +90,6 @@ export default class ClientsController {
       const pdv = await Client.query().where('salesman_id', auth.user.id)
       return pdv
     } else if (auth.user instanceof Account) {
-
       const pdv = await Client.query().where('account_id', auth.user.id)
       return pdv
     }

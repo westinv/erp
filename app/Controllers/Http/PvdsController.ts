@@ -83,4 +83,15 @@ export default class PdvsController {
       return pdv
     }
   }
+  public async isActivePdv({ params }: HttpContextContract) {
+
+    const findPdv = await Pvd.find(params.id)
+    if (findPdv?.isActive === true) {
+      findPdv.isActive = false
+      findPdv.save()
+    } else if (findPdv?.isActive === false) {
+      findPdv.isActive = true
+      findPdv?.save()
+    }
+  }
 }

@@ -10,20 +10,23 @@ export default class Pdv extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @belongsTo (()=> Account)
+  @belongsTo(() => Account)
   public account: BelongsTo<typeof Account>
 
-  @hasMany(()=> PhoneNumber)
+  @hasMany(() => PhoneNumber)
   public phoneNumber: HasMany<typeof PhoneNumber>
 
-  @hasMany(()=> Client)
+  @hasMany(() => Client)
   public client: HasMany<typeof Client>
 
-  @hasMany(()=> Signature)
+  @hasMany(() => Signature)
   public signature: HasMany<typeof Signature>
 
   @belongsTo(() => Salesman)
   public salesman: BelongsTo<typeof Salesman>
+
+  @column()
+  public isActive: boolean
 
   @column()
   public accountId: number

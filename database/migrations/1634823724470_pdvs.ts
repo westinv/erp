@@ -3,12 +3,25 @@ import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 export default class Pvds extends BaseSchema {
   protected tableName = 'pdvs'
 
-  public async up () {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
 
-      table.integer('account_id').unsigned().references('id').inTable('accounts').onDelete('CASCADE')
-      table.integer('salesman_id').unsigned().references('id').inTable('salesmen').onDelete('CASCADE')
+      table
+        .integer('account_id')
+        .unsigned()
+        .references('id')
+        .inTable('accounts')
+        .onDelete('CASCADE')
+
+      table
+        .integer('salesman_id')
+        .unsigned()
+        .references('id')
+        .inTable('salesmen')
+        .onDelete('CASCADE')
+
+      table.boolean('is_active').defaultTo('true')
 
       table.string('trade_name').notNullable()
       table.string('company_name').notNullable()
@@ -28,7 +41,7 @@ export default class Pvds extends BaseSchema {
     })
   }
 
-  public async down () {
+  public async down() {
     this.schema.dropTable(this.tableName)
   }
 }

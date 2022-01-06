@@ -1,6 +1,8 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Account from 'App/Models/Account';
 import Kit from 'App/Models/Kit';
 import KitProduct from 'App/Models/KitProduct';
+import Salesman from 'App/Models/Salesman';
 
 
 interface IProducts {
@@ -8,7 +10,7 @@ interface IProducts {
 }
 
 export default class KitsController {
-  public async store({ request, response }: HttpContextContract) {
+  public async store({ request, response, auth }: HttpContextContract) {
     try {
       const { description, price, name, shipping, discount, quantity } = request.body();
       const kits = await Kit.create({
@@ -17,7 +19,9 @@ export default class KitsController {
         name,
         shipping,
         discount,
-        quantity
+        quantity,
+        accountId: auth.user instanceof Account ? auth.user.id : undefined,
+        salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user?.salesmanId,
       });
 
       return kits;
@@ -82,7 +86,6 @@ export default class KitsController {
         const kitProduct = await KitProduct.create({
           kitId,
           productId,
-
         });
         return kitProduct
       })

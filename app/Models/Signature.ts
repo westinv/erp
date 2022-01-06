@@ -3,6 +3,8 @@ import { BaseModel, belongsTo, BelongsTo, column, hasMany, HasMany } from '@ioc:
 import SignatureClient from './SignatureClient'
 import Pvd from './Pdv'
 import SignatureCreate from './SignatureCreate'
+import Account from './Account'
+import Salesman from './Salesman'
 
 export default class Signature extends BaseModel {
   @column({ isPrimary: true })
@@ -14,8 +16,20 @@ export default class Signature extends BaseModel {
   @hasMany(() => SignatureCreate)
   public signatureIds: HasMany<typeof SignatureCreate>
 
-  @hasMany(()=> SignatureClient)
+  @hasMany(() => SignatureClient)
   public accounts: HasMany<typeof SignatureClient>
+
+  @belongsTo(() => Account)
+  public account: BelongsTo<typeof Account>
+
+  @belongsTo(() => Salesman)
+  public salesman: BelongsTo<typeof Salesman>
+
+  @column()
+  public accountId: number
+
+  @column()
+  public salesmanId: number
 
   @column()
   public pdvId: string
@@ -33,13 +47,13 @@ export default class Signature extends BaseModel {
   public note: string
 
   @column()
-  public clientCode : string
-  
-  @column()
-  public discount : number
+  public clientCode: string
 
   @column()
-  public shipping : number
+  public discount: number
+
+  @column()
+  public shipping: number
 
 
 

@@ -1,4 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Account from 'App/Models/Account';
+import Salesman from 'App/Models/Salesman';
 import Signature from 'App/Models/Signature';
 import SignatureCreate from 'App/Models/SignatureCreate';
 
@@ -10,7 +12,7 @@ interface Iids {
 
 export default class SignaturesController {
 
-  public async store({ request, response }: HttpContextContract) {
+  public async store({ request, response, auth }: HttpContextContract) {
 
     try {
       const { name, price, shipping, pdvId, note, discount, clientCode } = request.body()
@@ -21,7 +23,9 @@ export default class SignaturesController {
         note,
         shipping,
         discount,
-        clientCode
+        clientCode,
+        accountId: auth.user instanceof Account ? auth.user.id : undefined,
+        salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user?.salesmanId,
       });
 
       return signature;
@@ -85,9 +89,6 @@ export default class SignaturesController {
         return response.status(400).json({ message: 'Passou errado!' })
       }
       const returnids = productsId.map(async (productId) => {
-
-
-
         const todosIds = await SignatureCreate.create({
           productId,
           signatureId

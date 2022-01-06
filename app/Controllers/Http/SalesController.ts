@@ -1,7 +1,10 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Account from 'App/Models/Account';
 import KitProduct from 'App/Models/KitProduct';
 import Product from 'App/Models/Product';
 import Sale from 'App/Models/Sale';
+import Salesman from 'App/Models/Salesman';
+import authConfig from 'Config/auth';
 
 interface ICArrinho {
   kits?: {
@@ -20,13 +23,15 @@ interface ICArrinho {
   clientId?: number,
 }
 
-async function StoreKitId(kitId, quantity, pdvId, clientId) {
+async function StoreKitId(kitId, quantity, pdvId, clientId, auth) {
 
   const sale = await Sale.create({
     quantity: quantity,
     kitId: kitId,
     pdvId: pdvId,
     clientId: clientId,
+    accountId: auth.user instanceof Account ? auth.user.id : undefined,
+    salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user?.salesmanId,
   });
 
   const kitProduct = await KitProduct.query().where('kit_id', kitId)
@@ -40,13 +45,15 @@ async function StoreKitId(kitId, quantity, pdvId, clientId) {
   return sale
 }
 
-async function StoreProductId(pdvId, quantity, productId, clientId) {
+async function StoreProductId(pdvId, quantity, productId, clientId, auth) {
 
   const sale = await Sale.create({
     clientId: clientId,
     pdvId: pdvId,
     productId: productId,
-    quantity: quantity
+    quantity: quantity,
+    accountId: auth.user instanceof Account ? auth.user.id : undefined,
+    salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user?.salesmanId,
   });
 
   const findProduct = await Product.query().where('id', productId)
@@ -137,13 +144,13 @@ export default class SalesController {
     for (let i = 0; i < products.array.length; i++) {
       const loadIds = foundIds[i]
       const laodQuantity = foundQuantity[i]
-      StoreProductId(pdvId, laodQuantity, loadIds, clientId)
+      StoreProductId(pdvId, laodQuantity, loadIds, clientId, authConfig)
     }
 
     for (let j = 0; j < kits.array.length; j++) {
       const loadkitIds = foundKitIds[j]
       const laodkitQuantity = foundkitQuantity[j]
-      StoreKitId(loadkitIds, laodkitQuantity, pdvId, clientId)
+      StoreKitId(loadkitIds, laodkitQuantity, pdvId, clientId, authConfig)
     }
   }
 
