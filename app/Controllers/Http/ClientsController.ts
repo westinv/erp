@@ -11,7 +11,7 @@ export default class ClientsController {
       if (!(auth.user instanceof Salesman) && !(auth.user instanceof Account))
         return response.status(403);
 
-      const { name, address, city, number, state, district, cep, complement, phone, pdvId } = request.body()
+      const { name, address, city, number, state, district, cep, complement, phone, pdvId, clientCode } = request.body()
       const client = await Client.create({
         name,
         address,
@@ -23,6 +23,7 @@ export default class ClientsController {
         phone,
         number,
         pdvId,
+        clientCode,
         accountId: auth.user instanceof Account ? auth.user.id : undefined,
         salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user.salesmanId,
       })
@@ -79,6 +80,20 @@ export default class ClientsController {
     }
     try {
       const client = await Client.query().where('pdvId', pdvId)
+      return client
+    } catch (error) {
+      return response.status(400).json({ message: error.message })
+    }
+  }
+
+  public async indexByClientCode({ response, request }: HttpContextContract) {
+    const clientCode = request.header('clientCode')
+
+    if (!clientCode) {
+      return response.status(400).json({ message: "Esqueceu de passar" })
+    }
+    try {
+      const client = await Client.query().where('clientCode', clientCode)
       return client
     } catch (error) {
       return response.status(400).json({ message: error.message })
