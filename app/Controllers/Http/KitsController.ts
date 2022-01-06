@@ -152,4 +152,14 @@ export default class KitsController {
     const listHistory = await KitProduct.query().from('kit_products').where('kit_id', `${id}`).preload('product')
     return listHistory
   }
+
+  public async showlistkits({ auth }: HttpContextContract) {
+    if (auth.user instanceof Salesman) {
+      const pdv = await Kit.query().where('salesman_id', auth.user.id)
+      return pdv
+    } else if (auth.user instanceof Account) {
+      const pdv = await Kit.query().where('account_id', auth.user.id)
+      return pdv
+    }
+  }
 }

@@ -83,7 +83,6 @@ export default class ProductsController {
   public async indexByPdvId({ response, request }: HttpContextContract) {
 
     const pdvId = request.header('pdvId')
-
     if (!pdvId) {
       return response.status(400).json({ message: "Esqueceu de passar" })
     }
@@ -94,7 +93,17 @@ export default class ProductsController {
     } catch (error) {
       return response.status(400).json({ message: error.message })
     }
-
   }
+
+  public async showlistProducts({ auth }: HttpContextContract) {
+    if (auth.user instanceof Salesman) {
+      const pdv = await Product.query().where('salesman_id', auth.user.id)
+      return pdv
+    } else if (auth.user instanceof Account) {
+      const pdv = await Product.query().where('account_id', auth.user.id)
+      return pdv
+    }
+  }
+
 
 }

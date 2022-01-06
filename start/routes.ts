@@ -31,6 +31,7 @@ Route.group(() =>
   Route.resource('/product', 'ProductsController').apiOnly()
 ).middleware('auth:api,apiAccount')
 Route.get('/product/pdv/id', 'ProductsController.indexByPdvId')
+Route.get('/listproduct', 'ProductsController.showlistProducts').middleware('auth:api,apiAccount')
 
 Route.group(() =>
   Route.resource('/signature', 'SignaturesController').apiOnly()
@@ -38,6 +39,9 @@ Route.group(() =>
 Route.post('/signatureids', 'SignaturesController.sigantureIds')
 Route.delete('/signuteids/:id', 'SignaturesController.signatureDeleteProduct')
 Route.put('/signature/products/:id', "SignaturesController.signatureUpdateProdructs")
+Route.get('/listsignature', 'SignaturesController.showlistSignature').middleware('auth:api,apiAccount')
+
+
 Route.group(() =>
   Route.resource('/sale', 'SalesController').apiOnly()
 ).middleware('auth:api,apiAccount')
@@ -50,7 +54,9 @@ Route.post('/kitproduct', 'KitsController.kitProduct')
 Route.delete('/kitproduct/:id', 'KitsController.kitProductDelete')
 Route.put('/kitproduct/:id', 'KitsController.kitProductUpdate')
 Route.delete('/kitproduct/product/:id', 'KitsController.kitProductDeleteProduct')
+Route.get('/listkits', 'KitsController.showlistkits').middleware('auth:api,apiAccount')
 Route.get('/findproduct/:id', 'KitsController.FindProducts')
+
 
 Route.group(() =>
   Route.resource('/releases', 'ReleasesController').apiOnly()
