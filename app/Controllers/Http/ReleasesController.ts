@@ -1,32 +1,36 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Account from 'App/Models/Account';
 import Release from 'App/Models/Release';
+import Salesman from 'App/Models/Salesman';
 
 export default class ReleasesController {
 
-  public async store({request, response }: HttpContextContract) {
+  public async store({ request, response, auth }: HttpContextContract) {
 
     try {
       const { description, price, pdvId, name, bank, transactionType } = request.body()
-      const expenses  = await Release.create({
+      const expenses = await Release.create({
         description,
         price,
         pdvId,
         name,
         bank,
-        transactionType
+        transactionType,
+        accountId: auth.user instanceof Account ? auth.user.id : undefined,
+        salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user?.salesmanId
       });
       return expenses;
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
     }
   }
 
-  public async index({response}: HttpContextContract) {
+  public async index({ response }: HttpContextContract) {
     try {
       const expenses = await Release.all();
       return expenses;
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
     }
 
   }
@@ -36,7 +40,7 @@ export default class ReleasesController {
       const expenses = await Release.find(params.id);
       return expenses;
     } catch (error) {
-      return response.status(404).json({message: error.message})
+      return response.status(404).json({ message: error.message })
     }
 
   }
@@ -54,15 +58,31 @@ export default class ReleasesController {
       return findExpenses;
 
     } catch (error) {
-      return response.status(404).json({message: error.message})
+      return response.status(404).json({ message: error.message })
     }
   }
 
   public async destroy({ params, response }: HttpContextContract) {
     const findExpenses = await Release.find(params.id);
 
-    if(!findExpenses)
+    if (!findExpenses)
       return response.status(404);
     await findExpenses.delete();
+  }
+
+  public async showReleasesByPdvId({ params }: HttpContextContract) {
+    const { id } = params
+    const listHistory = await Release.query().where('pdv_id', `${id}`).preload('pdv')
+    return listHistory
+  }
+
+  public async showlistReleases({ auth }: HttpContextContract) {
+    if (auth.user instanceof Salesman) {
+      const pdv = await Release.query().where('salesman_id', auth.user.id)
+      return pdv
+    } else if (auth.user instanceof Account) {
+      const pdv = await Release.query().where('account_id', auth.user.id)
+      return pdv
+    }
   }
 }

@@ -3,7 +3,7 @@ import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 export default class Releases extends BaseSchema {
   protected tableName = 'releases'
 
-  public async up () {
+  public async up() {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
 
@@ -12,14 +12,26 @@ export default class Releases extends BaseSchema {
       table.string('transaction_type').notNullable()
       table.string('name').notNullable()
       table.string('bank').notNullable()
-
+      table
+        .integer('account_id')
+        .unsigned()
+        .references('id')
+        .inTable('accounts')
+        .onDelete('CASCADE')
 
       table
-          .integer('pdv_id')
-          .unsigned()
-          .references('id')
-          .inTable('pdvs')
-          .onDelete('CASCADE')
+        .integer('salesman_id')
+        .unsigned()
+        .references('id')
+        .inTable('salesmen')
+        .onDelete('CASCADE')
+
+      table
+        .integer('pdv_id')
+        .unsigned()
+        .references('id')
+        .inTable('pdvs')
+        .onDelete('CASCADE')
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
@@ -29,7 +41,7 @@ export default class Releases extends BaseSchema {
     })
   }
 
-  public async down () {
+  public async down() {
     this.schema.dropTable(this.tableName)
   }
 }

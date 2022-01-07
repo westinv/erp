@@ -61,7 +61,9 @@ Route.get('/findproduct/:id', 'KitsController.FindProducts')
 
 Route.group(() =>
   Route.resource('/releases', 'ReleasesController').apiOnly()
-)//.middleware('auth:api,apiAccount')
+).middleware('auth:api,apiAccount')
+Route.get('/listrelease/:id', 'ReleasesController.showReleasesByPdvId')
+Route.get('/listrelease', 'ReleasesController.showlistReleases').middleware('auth:api,apiAccount')
 
 Route.group(() =>
   Route.resource('/fixedexpenses', 'FixedExpensesController').apiOnly()

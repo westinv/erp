@@ -6,7 +6,7 @@ export default class SalesmenController {
 
     try {
       const {
-        name,number ,cpf, cnpj, address, city,complements, district, email, phone, username, password,
+        name, number, cpf, cnpj, address, city, complements, district, email, phone, username, password,
       } = request.body()
       const salesmen = await Salesman.create({
         name,
@@ -27,20 +27,20 @@ export default class SalesmenController {
       return salesmen;
 
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
 
     }
 
   }
 
-  public async index({response}: HttpContextContract) {
+  public async index({ response }: HttpContextContract) {
 
     try {
       const salesmen = await Salesman.all();
 
-    return salesmen;
+      return salesmen;
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
     }
 
   }
@@ -51,11 +51,11 @@ export default class SalesmenController {
       await salesmen?.load('accounts')
       return salesmen
     } catch (error) {
-      return response.status(404).json({message: error.message})
+      return response.status(404).json({ message: error.message })
     }
   }
 
-  public async update({ response,request, params }: HttpContextContract) {
+  public async update({ response, request, params }: HttpContextContract) {
     try {
       const findSalesman = await Salesman.find(params.id);
       const dados = request.body();
@@ -66,14 +66,15 @@ export default class SalesmenController {
         return findSalesman;
       }
     } catch (error) {
-      return response.status(404).json({message: error.message})
+      return response.status(404).json({ message: error.message })
     }
   }
 
-  public async destroy({ params,  response }: HttpContextContract) {
+  public async destroy({ params, response }: HttpContextContract) {
     const findSalesman = await Salesman.find(params.id);
-      if(!findSalesman)
+    if (!findSalesman)
       return response.status(404);
-      await findSalesman.delete();
+    await findSalesman.delete();
   }
+
 }

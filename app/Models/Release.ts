@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
 import Pdv from './Pdv'
+import Account from './Account'
+import Salesman from './Salesman'
 
 export default class Release extends BaseModel {
   @column({ isPrimary: true })
@@ -8,6 +10,18 @@ export default class Release extends BaseModel {
 
   @belongsTo(() => Pdv)
   public pdv: BelongsTo<typeof Pdv>
+
+  @belongsTo(() => Account)
+  public account: BelongsTo<typeof Account>
+
+  @belongsTo(() => Salesman)
+  public salesman: BelongsTo<typeof Salesman>
+
+  @column()
+  public accountId: number
+
+  @column()
+  public salesmanId: number
 
   @column()
   public pdvId: number
