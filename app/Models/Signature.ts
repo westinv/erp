@@ -46,8 +46,6 @@ export default class Signature extends BaseModel {
   @column()
   public note: string
 
-  @column()
-  public clientCode: string
 
   @column()
   public discount: number

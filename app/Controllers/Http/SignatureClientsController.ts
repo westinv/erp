@@ -7,13 +7,15 @@ export default class SignatureClientsController {
   public async store({ request, response, auth }: HttpContextContract) {
 
     try {
-      const clientId = request.header('clientId')
-      const { signatureDate, activeSubscription, dueDate } = request.body()
+
+      const { signatureDate, activeSubscription, dueDate, clientCode, clientId, signatureId } = request.body()
       const clients = await SignatureClient.create({
         signatureDate,
         activeSubscription,
         dueDate,
         clientId,
+        signatureId,
+        clientCode,
         accountId: auth.user instanceof Account ? auth.user.id : undefined,
         salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user?.salesmanId,
       });
@@ -67,18 +69,10 @@ export default class SignatureClientsController {
     await findclients.delete();
   }
 
-  public async indexByclientId({ response, request }: HttpContextContract) {
-    const clientId = request.header('clientId')
+  public async indexByclientId({ params }: HttpContextContract) {
+    const { id } = params
+    const listHistory = await SignatureClient.query().where('client_id', `${id}`).preload('signature')
+    return listHistory
 
-    if (!clientId) {
-      return response.status(400).json({ message: "Esqueceu de passar" })
-    }
-
-    try {
-      const clients = await SignatureClient.all();
-      return clients;
-    } catch (error) {
-      return response.status(400).json({ message: error.message })
-    }
   }
 }

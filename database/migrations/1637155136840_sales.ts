@@ -7,6 +7,8 @@ export default class Sales extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id').primary()
       table.float('quantity')
+      table.float('discount')
+      table.float('shipping')
       table
         .integer('pdv_id')
         .unsigned()

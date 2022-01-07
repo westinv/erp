@@ -4,11 +4,11 @@ import FixedExpense from "App/Models/FixedExpense";
 
 export default class FixedExpensesController {
 
-  public async store({request, response }: HttpContextContract) {
+  public async store({ request, response }: HttpContextContract) {
 
     try {
       const { description, price, pdvId, name, bank, transactionType } = request.body()
-      const expenses  = await FixedExpense.create({
+      const expenses = await FixedExpense.create({
         description,
         price,
         pdvId,
@@ -18,16 +18,16 @@ export default class FixedExpensesController {
       });
       return expenses;
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
     }
   }
 
-  public async index({response}: HttpContextContract) {
+  public async index({ response }: HttpContextContract) {
     try {
       const expenses = await FixedExpense.all();
       return expenses;
     } catch (error) {
-      return response.status(400).json({message: error.message})
+      return response.status(400).json({ message: error.message })
     }
 
   }
@@ -37,7 +37,7 @@ export default class FixedExpensesController {
       const expenses = await FixedExpense.find(params.id);
       return expenses;
     } catch (error) {
-      return response.status(404).json({message: error.message})
+      return response.status(404).json({ message: error.message })
     }
 
   }
@@ -55,28 +55,23 @@ export default class FixedExpensesController {
       return findExpenses;
 
     } catch (error) {
-      return response.status(404).json({message: error.message})
+      return response.status(404).json({ message: error.message })
     }
   }
 
   public async destroy({ params, response }: HttpContextContract) {
     const findExpenses = await FixedExpense.find(params.id);
 
-    if(!findExpenses)
+    if (!findExpenses)
       return response.status(404);
     await findExpenses.delete();
   }
 
-  public async showHistoryByPdvId ({ params}: HttpContextContract) {
-
-    //const listHistory = await FixedExpense.query().from('fixed_expenses').where('pdv_id', `${id}`)
-    const findExpenses = await FixedExpense.find(params.id);
-    if(findExpenses){
-
-    console.log(findExpenses.$attributes.bank)
-    }
-
-
-    return findExpenses
+  public async showExpensesByPdvId({ params }: HttpContextContract) {
+    const { id } = params
+    const listHistory = await FixedExpense.query().where('pdv_id', `${id}`).preload('pdv')
+    return listHistory
   }
+
+
 }

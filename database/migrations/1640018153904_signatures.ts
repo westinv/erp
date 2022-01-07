@@ -11,7 +11,7 @@ export default class Signatures extends BaseSchema {
       table.float('shipping')
       table.string('note')
       table.float('discount')
-      table.string('client_code')
+
 
       table
         .integer('pdv_id')

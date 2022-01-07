@@ -26,10 +26,17 @@ export default class SignatureClients extends BaseSchema {
         .inTable('salesmen')
         .onDelete('CASCADE')
 
+      table
+        .integer('signature_id')
+        .unsigned()
+        .references('id')
+        .inTable('signatures')
+        .onDelete('CASCADE')
+
       table.string("signature_date").notNullable
       table.string("due_date").notNullable
       table.boolean('active_subscription').notNullable
-
+      table.string('client_code')
       table.timestamp('created_at', { useTz: true })
       table.timestamp('updated_at', { useTz: true })
     })

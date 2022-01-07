@@ -47,6 +47,11 @@ export default class Sale extends BaseModel {
   @column()
   public clientId: number
 
+  @column()
+  public discount: number
+
+  @column()
+  public shipping: number
 
 
   @column()

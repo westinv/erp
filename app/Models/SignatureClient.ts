@@ -40,6 +40,9 @@ export default class SignatureClient extends BaseModel {
   public signatureDate: string
 
   @column()
+  public clientCode: string
+
+  @column()
   public dueDate: string
 
   @column()

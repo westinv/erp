@@ -15,7 +15,7 @@ export default class SignaturesController {
   public async store({ request, response, auth }: HttpContextContract) {
 
     try {
-      const { name, price, shipping, pdvId, note, discount, clientCode } = request.body()
+      const { name, price, shipping, pdvId, note, discount } = request.body()
       const signature = await Signature.create({
         name,
         price,
@@ -23,7 +23,6 @@ export default class SignaturesController {
         note,
         shipping,
         discount,
-        clientCode,
         accountId: auth.user instanceof Account ? auth.user.id : undefined,
         salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user?.salesmanId,
       });

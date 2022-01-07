@@ -1,4 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import AuthMiddleware from 'App/Middleware/Auth';
 import Account from 'App/Models/Account';
 import KitProduct from 'App/Models/KitProduct';
 import Product from 'App/Models/Product';
@@ -19,17 +20,21 @@ interface ICArrinho {
       quantity: number
     }]
   },
+  discount?: number
+  shipping?: number
   pdvId?: number,
   clientId?: number,
 }
 
-async function StoreKitId(kitId, quantity, pdvId, clientId, auth) {
+async function StoreKitId(kitId, quantity, pdvId, clientId, discount, shipping, auth) {
 
   const sale = await Sale.create({
     quantity: quantity,
     kitId: kitId,
     pdvId: pdvId,
     clientId: clientId,
+    discount: discount,
+    shipping: shipping,
     accountId: auth.user instanceof Account ? auth.user.id : undefined,
     salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user?.salesmanId,
   });
@@ -45,13 +50,15 @@ async function StoreKitId(kitId, quantity, pdvId, clientId, auth) {
   return sale
 }
 
-async function StoreProductId(pdvId, quantity, productId, clientId, auth) {
+async function StoreProductId(pdvId, quantity, productId, clientId, discount, shipping, auth) {
 
   const sale = await Sale.create({
     clientId: clientId,
     pdvId: pdvId,
     productId: productId,
     quantity: quantity,
+    discount: discount,
+    shipping: shipping,
     accountId: auth.user instanceof Account ? auth.user.id : undefined,
     salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user?.salesmanId,
   });
@@ -116,7 +123,7 @@ export default class SalesController {
 
   public async carrinho({ response, request }: HttpContextContract) {
 
-    const { kits, products, pdvId, clientId }: ICArrinho = request.body()
+    const { kits, products, pdvId, clientId, discount, shipping }: ICArrinho = request.body()
 
     if (!pdvId || !clientId) {
       return response.status(400).json({ message: "Esqueceu de passar kitId ou productId" })
@@ -144,13 +151,13 @@ export default class SalesController {
     for (let i = 0; i < products.array.length; i++) {
       const loadIds = foundIds[i]
       const laodQuantity = foundQuantity[i]
-      StoreProductId(pdvId, laodQuantity, loadIds, clientId, authConfig)
+      StoreProductId(pdvId, laodQuantity, loadIds, clientId, discount, shipping, authConfig)
     }
 
     for (let j = 0; j < kits.array.length; j++) {
       const loadkitIds = foundKitIds[j]
       const laodkitQuantity = foundkitQuantity[j]
-      StoreKitId(loadkitIds, laodkitQuantity, pdvId, clientId, authConfig)
+      StoreKitId(loadkitIds, laodkitQuantity, pdvId, clientId, discount, shipping, AuthMiddleware)
     }
   }
 
