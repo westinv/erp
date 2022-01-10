@@ -84,7 +84,7 @@ export default class ProductsController {
 
     const pdvId = request.header('pdvId')
     if (!pdvId) {
-      return response.status(400).json({ message: "Esqueceu de passar" })
+      return response.status(400).json({ message: "Id do ponto de venda incorreto ou inexistente!" })
     }
 
     try {

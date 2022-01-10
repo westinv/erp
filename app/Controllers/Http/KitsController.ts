@@ -80,7 +80,7 @@ export default class KitsController {
       const kitId = request.header('kitId')
       const { productId }: IProducts = request.body()
       if (!productId) {
-        return response.status(400).json({ message: 'Passou errado!' })
+        return response.status(400).json({ message: 'Id do kit incorreto ou inexistente!' })
       }
       const returnProduct = productId.map(async (productId) => {
         const kitProduct = await KitProduct.create({
@@ -127,19 +127,19 @@ export default class KitsController {
      try {
        const findkitProduct = await KitProduct.query().where('kit_id', params.id)
        const productId = request.body()
-       
-       
+
+
        const teste = await findkitProduct.map(async (product) => {
          return product.productId
        })
- 
- 
- 
- 
- 
+
+
+
+
+
        // const findkitProduct = await KitProduct.find(params.id)
        /*  if (findkitProduct) {
-    
+
           await findkitProduct.delete()
         }
      } catch (error) {

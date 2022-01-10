@@ -85,7 +85,7 @@ export default class SignaturesController {
     try {
       const { productsId, signatureId }: Iids = request.body()
       if (!productsId) {
-        return response.status(400).json({ message: 'Passou errado!' })
+        return response.status(400).json({ message: 'Id do produto incorreto ou inexistente!' })
       }
       const returnids = productsId.map(async (productId) => {
         const todosIds = await SignatureCreate.create({

@@ -76,7 +76,7 @@ export default class ClientsController {
     const pdvId = request.header('pdvId')
 
     if (!pdvId) {
-      return response.status(400).json({ message: "Esqueceu de passar" })
+      return response.status(400).json({ message: "Id do ponto de venda incorreto ou inexistente!" })
     }
     try {
       const client = await Client.query().where('pdvId', pdvId)
@@ -90,7 +90,7 @@ export default class ClientsController {
     const clientCode = request.header('clientCode')
 
     if (!clientCode) {
-      return response.status(400).json({ message: "Esqueceu de passar" })
+      return response.status(400).json({ message: "Id do código do cliente incorreto ou inexistente!" })
     }
     try {
       const client = await Client.query().where('clientCode', clientCode)
