@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Account from 'App/Models/Account';
+import Client from 'App/Models/Client';
 import Salesman from 'App/Models/Salesman';
 import SignatureClient from 'App/Models/SignatureClient';
 
@@ -71,8 +72,10 @@ export default class SignatureClientsController {
 
   public async indexByclientId({ params }: HttpContextContract) {
     const { id } = params
-    const listHistory = await SignatureClient.query().where('client_id', `${id}`).preload('signature')
-    return listHistory
+    const historicoAssinatura = await SignatureClient.query().where('client_id', `${id}`).preload('signature')
+    const cliente = await Client.query().select('*').where('id', `${id}`)
+
+    return {historicoAssinatura, cliente}
 
   }
 }
