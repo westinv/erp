@@ -121,6 +121,15 @@ export default class SalesController {
     await findSale.delete();
   }
 
+  public async listByClient({ params }: HttpContextContract) {
+
+    const { id } = params
+    const listByClient = await Sale.query().where('client_id', `${id}`).preload('client')
+    return listByClient
+  }
+
+
+
   public async carrinho({ response, request }: HttpContextContract) {
 
     const { kits, products, pdvId, clientId, discount, shipping }: ICArrinho = request.body()
