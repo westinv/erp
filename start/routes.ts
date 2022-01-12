@@ -55,6 +55,7 @@ Route.group(() =>
 ).middleware('auth:api,apiAccount')
 Route.post('/carrinho', 'SalesController.carrinho')
 Route.get('/listsale/:id', 'SalesController.listByClient')
+Route.get('/listsalebypdv/:id', 'SalesController.listByPdv')
 
 //-------------------------Kit------------------------------------------------------------------------
 Route.group(() =>

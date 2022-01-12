@@ -128,6 +128,12 @@ export default class SalesController {
     return listByClient
   }
 
+  public async listByPdv({ params }: HttpContextContract) {
+
+    const { id } = params
+    const listByPdv = await Sale.query().where('pdv_id', `${id}`).preload('client')
+    return listByPdv
+  }
 
 
   public async carrinho({ response, request }: HttpContextContract) {
