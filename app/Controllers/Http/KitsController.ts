@@ -123,28 +123,17 @@ export default class KitsController {
     }
   }
 
-  /*  public async kitProductDeleteProduct({ params, response, request }: HttpContextContract) {
-     try {
-       const findkitProduct = await KitProduct.query().where('kit_id', params.id)
-       const productId = request.body()
+  public async kitProductDeleteProduct({ params, response, request }: HttpContextContract) {
+    try {
+      const { productsId } = request.body();
+      const findkitProduct = await KitProduct.query().where('kit_id', params.id).whereIn('product_id', productsId).delete()
 
-
-       const teste = await findkitProduct.map(async (product) => {
-         return product.productId
-       })
-
-
-
-
-
-       // const findkitProduct = await KitProduct.find(params.id)
-       /*  if (findkitProduct) {
-
-          await findkitProduct.delete()
-        }
-     } catch (error) {
-       return response.status(400).json({ message: error.message })
-     } }*/
+      return findkitProduct
+    }
+    catch (error) {
+      return response.status(400).json({ message: error.message })
+    }
+  }
 
 
   public async FindProducts({ params }: HttpContextContract) {

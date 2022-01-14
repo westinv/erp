@@ -100,13 +100,11 @@ export default class SignaturesController {
     }
   }
 
-  public async signatureDeleteProduct({ params, response }: HttpContextContract) {
+  public async signatureDeleteProduct({ params, response, request }: HttpContextContract) {
 
     try {
-      const findassing = await SignatureCreate.find(params.id)
-      if (!findassing)
-        return response.status(404)
-      await findassing.delete()
+      const { productsId } = request.body();
+      const findSignatureids = await SignatureCreate.query().where('signature_id', params.id).whereIn('product_id', productsId).delete()
     } catch (error) {
       return response.status(400).json({ message: error.message })
     }
