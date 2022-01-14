@@ -43,6 +43,7 @@ Route.get('/listproduct', 'ProductsController.showlistProducts').middleware('aut
 //-------------------------Signature------------------------------------------------------------------------
 Route.group(() =>
   Route.resource('/signature', 'SignaturesController').apiOnly()
+
 ).middleware('auth:api,apiAccount')
 Route.post('/signatureids', 'SignaturesController.sigantureIds')
 Route.delete('/signatureids/:id', 'SignaturesController.signatureDeleteProduct')
