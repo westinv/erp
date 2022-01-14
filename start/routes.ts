@@ -32,7 +32,7 @@ Route.group(() =>
   Route.resource('/signaturecleint', 'SignatureClientsController').apiOnly()
 ).middleware('auth:api,apiAccount')
 Route.get('/listsignatureclient/:id', 'SignatureClientsController.indexByclientId').middleware('auth:api,apiAccount')
-
+Route.get('/listsignatureactive', 'SignatureClientsController.indexByActive').middleware('auth:api,apiAccount')
 //-------------------------Product------------------------------------------------------------------------
 Route.group(() =>
   Route.resource('/product', 'ProductsController').apiOnly()

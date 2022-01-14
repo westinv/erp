@@ -75,7 +75,18 @@ export default class SignatureClientsController {
     const historicoAssinatura = await SignatureClient.query().where('client_id', `${id}`).preload('signature')
     const cliente = await Client.query().select('*').where('id', `${id}`)
 
-    return {historicoAssinatura, cliente}
-
+    return { historicoAssinatura, cliente }
   }
+
+  public async indexByActive({ auth }: HttpContextContract) {
+
+    if (auth.user instanceof Salesman) {
+      const pdv = await SignatureClient.query().where('salesman_id', auth.user.id).andWhere('active_subscription', true).preload('client')
+      return pdv
+    } else if (auth.user instanceof Account) {
+      const pdv = await SignatureClient.query().where('account_id', auth.user.id).andWhere('active_subscription', true).preload('client')
+      return pdv
+    }
+  }
+
 }
