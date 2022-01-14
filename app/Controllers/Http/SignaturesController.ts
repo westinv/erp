@@ -133,10 +133,10 @@ export default class SignaturesController {
 
   public async showlistSignature({ auth }: HttpContextContract) {
     if (auth.user instanceof Salesman) {
-      const pdv = await Signature.query().where('salesman_id', auth.user.id)
+      const pdv = await Signature.query().where('salesman_id', auth.user.id).preload('signatureIds')
       return pdv
     } else if (auth.user instanceof Account) {
-      const pdv = await Signature.query().where('account_id', auth.user.id)
+      const pdv = await Signature.query().where('account_id', auth.user.id).preload('signatureIds')
       return pdv
     }
   }
