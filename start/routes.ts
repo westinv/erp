@@ -29,7 +29,7 @@ Route.get('/clientcode', 'ClientsController.indexByClientCode')
 
 //-------------------------SignatureClient------------------------------------------------------------------------
 Route.group(() =>
-  Route.resource('/signaturecleint', 'SignatureClientsController').apiOnly()
+  Route.resource('/signatureclient', 'SignatureClientsController').apiOnly()
 ).middleware('auth:api,apiAccount')
 Route.get('/listsignatureclient/:id', 'SignatureClientsController.indexByclientId').middleware('auth:api,apiAccount')
 Route.get('/listsignatureactive', 'SignatureClientsController.indexByActive').middleware('auth:api,apiAccount')
@@ -45,7 +45,7 @@ Route.group(() =>
   Route.resource('/signature', 'SignaturesController').apiOnly()
 ).middleware('auth:api,apiAccount')
 Route.post('/signatureids', 'SignaturesController.sigantureIds')
-Route.delete('/signuteids/:id', 'SignaturesController.signatureDeleteProduct')
+Route.delete('/signatureids/:id', 'SignaturesController.signatureDeleteProduct')
 Route.put('/signature/products/:id', "SignaturesController.signatureUpdateProdructs")
 Route.get('/listsignature', 'SignaturesController.showlistSignature').middleware('auth:api,apiAccount')
 
