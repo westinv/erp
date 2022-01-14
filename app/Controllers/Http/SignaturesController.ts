@@ -105,6 +105,7 @@ export default class SignaturesController {
     try {
       const { productsId } = request.body();
       const findSignatureids = await SignatureCreate.query().where('signature_id', params.id).whereIn('product_id', productsId).delete()
+      return findSignatureids
     } catch (error) {
       return response.status(400).json({ message: error.message })
     }
