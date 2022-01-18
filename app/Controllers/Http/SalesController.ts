@@ -1,12 +1,11 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import AuthMiddleware from 'App/Middleware/Auth';
 import Account from 'App/Models/Account';
 import Kit from 'App/Models/Kit';
 import KitProduct from 'App/Models/KitProduct';
 import Product from 'App/Models/Product';
 import Sale from 'App/Models/Sale';
 import Salesman from 'App/Models/Salesman';
-import authConfig from 'Config/auth';
+
 
 interface ICArrinho {
   kits?: {
