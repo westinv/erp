@@ -32,6 +32,8 @@ async function StoreKitId(kitId, quantity, pdvId, clientId, discount, shipping, 
 
   const findPrice = findkit.map(async(price)=>{
     const kitprice = price.$attributes.price
+    const valueSale = quantity * kitprice
+
 
     const sale = await Sale.create({
       quantity: quantity,
@@ -40,7 +42,7 @@ async function StoreKitId(kitId, quantity, pdvId, clientId, discount, shipping, 
       clientId: clientId,
       discount: discount,
       shipping: shipping,
-      value: kitprice,
+      value: valueSale,
       accountId: auth.user instanceof Account ? auth.user.id : undefined,
       salesmanId: auth.user instanceof Salesman ? auth.user.id : auth.user?.salesmanId,
     });
