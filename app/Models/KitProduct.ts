@@ -21,7 +21,10 @@ export default class KitProduct extends BaseModel {
   public kitId: string
 
   @column()
-  public availableQuantity: number
+  public quantity: number
+
+  @column()
+  public value: number
 
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime

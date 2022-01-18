@@ -36,6 +36,9 @@ export default class Sale extends BaseModel {
   public salesmanId: number
 
   @column()
+  public value: number
+
+  @column()
   public kitId: number
 
   @column()

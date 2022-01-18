@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Account from 'App/Models/Account';
 import Kit from 'App/Models/Kit';
 import KitProduct from 'App/Models/KitProduct';
+import Product from 'App/Models/Product';
 import Salesman from 'App/Models/Salesman';
 
 
@@ -83,11 +84,20 @@ export default class KitsController {
         return response.status(400).json({ message: 'Id do kit incorreto ou inexistente!' })
       }
       const returnProduct = productId.map(async (productId) => {
-        const kitProduct = await KitProduct.create({
-          kitId,
-          productId,
-        });
-        return kitProduct
+        const findProduct = await Product.query().where('id', productId)
+        const returnPrice = findProduct.map(async(price)=>{
+
+          const value1 = price.$attributes.price
+
+          const kitProduct = await KitProduct.create({
+            kitId,
+            productId,
+            value: value1
+          });
+          return kitProduct
+        })
+
+        return returnPrice
       })
       return returnProduct
     }

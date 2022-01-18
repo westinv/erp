@@ -54,7 +54,7 @@ Route.get('/listsignature', 'SignaturesController.showlistSignature').middleware
 Route.group(() =>
   Route.resource('/sale', 'SalesController').apiOnly()
 ).middleware('auth:api,apiAccount')
-Route.post('/carrinho', 'SalesController.carrinho')
+Route.post('/carrinho', 'SalesController.carrinho').middleware('auth:api,apiAccount')
 Route.get('/listsale/:id', 'SalesController.listByClient')
 Route.get('/listsalebypdv/:id', 'SalesController.listByPdv')
 

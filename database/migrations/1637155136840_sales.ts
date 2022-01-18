@@ -9,6 +9,7 @@ export default class Sales extends BaseSchema {
       table.float('quantity')
       table.float('discount')
       table.float('shipping')
+      table.float('value')
       table
         .integer('pdv_id')
         .unsigned()
