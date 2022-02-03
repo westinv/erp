@@ -1,5 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Account from 'App/Models/Account';
+import Pdv from 'App/Models/Pdv';
 import Pvd from 'App/Models/Pdv';
 import Salesman from 'App/Models/Salesman';
 
@@ -94,4 +95,23 @@ export default class PdvsController {
       findPdv?.save()
     }
   }
+
+  public async showlistByCnpj({ request, response }: HttpContextContract) {
+    const cnpj = request.header('cnpj')
+
+    if (!cnpj) {
+      return response.status(400).json({
+        errors: [{
+          message: 'Requisição inválida, parâmetro cnpj não informado.'
+        }]
+      });
+    }
+
+    const findCnpj = await Pdv.query()
+      .where('cnpj', "=", cnpj)
+    return findCnpj;
+  }
+
+
+
 }

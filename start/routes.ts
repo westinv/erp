@@ -18,6 +18,7 @@ Route.group(() =>
 ).middleware('auth:api,apiAccount')
 Route.get('/listpdv', 'PvdsController.showlistclient').middleware('auth:api,apiAccount')
 Route.put('/active/:id', 'PvdsController.isActivePdv')
+Route.get('/listpdvbycnpj', 'PvdsController.showlistByCnpj').middleware('auth:api,apiAccount')
 
 //-------------------------Client------------------------------------------------------------------------
 Route.group(() =>
