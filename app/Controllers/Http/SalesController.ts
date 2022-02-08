@@ -5,6 +5,7 @@ import KitProduct from 'App/Models/KitProduct';
 import Product from 'App/Models/Product';
 import Sale from 'App/Models/Sale';
 import Salesman from 'App/Models/Salesman';
+import { DateTime } from 'luxon';
 
 
 interface ICArrinho {
@@ -26,11 +27,12 @@ interface ICArrinho {
   clientId?: number,
 }
 
+
 async function StoreKitId(kitId, quantity, pdvId, clientId, discount, shipping, auth) {
   const kitProduct = await KitProduct.query().where('kit_id', kitId)
   const findkit = await Kit.query().where('id', kitId)
 
-  const findPrice = findkit.map(async(price)=>{
+  const findPrice = findkit.map(async (price) => {
     const kitprice = price.$attributes.price
     const valueSale = quantity * kitprice
 
@@ -190,6 +192,27 @@ export default class SalesController {
       const loadkitIds = foundKitIds[j]
       const laodkitQuantity = foundkitQuantity[j]
       StoreKitId(loadkitIds, laodkitQuantity, pdvId, clientId, discount, shipping, auth)
+    }
+  }
+
+  public async grafico({ request }: HttpContextContract) {
+    const data = request.qs();
+    const pdvId = request.header('pdvId')
+    const findDate = await Sale.query().where('pdv_id', `${pdvId}`).whereBetween('created_at', [data.dataInicio, data.dataFim])
+
+    var valueGrafico: number[]
+    var dateGrafico: DateTime
+    var grafico
+
+    for (let i = 0; i < findDate.length; i++) {
+      valueGrafico = await findDate[i].$attributes.value
+      dateGrafico = await findDate[i].$attributes.createdAt
+
+      grafico = {
+        data: dateGrafico.toJSDate(),
+        valor: valueGrafico
+      }
+      return grafico
     }
   }
 
