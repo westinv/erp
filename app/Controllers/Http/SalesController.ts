@@ -28,6 +28,7 @@ interface ICArrinho {
 }
 
 
+
 async function StoreKitId(kitId, quantity, pdvId, clientId, discount, shipping, auth) {
   const kitProduct = await KitProduct.query().where('kit_id', kitId)
   const findkit = await Kit.query().where('id', kitId)
@@ -195,25 +196,24 @@ export default class SalesController {
     }
   }
 
-  public async grafico({ request }: HttpContextContract) {
+  public async salesChart({ request, response }: HttpContextContract) {
     const data = request.qs();
     const pdvId = request.header('pdvId')
     const findDate = await Sale.query().where('pdv_id', `${pdvId}`).whereBetween('created_at', [data.dataInicio, data.dataFim])
 
-    var valueGrafico: number[]
+
+    var valueGrafico: number
     var dateGrafico: DateTime
-    var grafico
+    var grafico: any[] = []
 
     for (let i = 0; i < findDate.length; i++) {
       valueGrafico = await findDate[i].$attributes.value
-      dateGrafico = await findDate[i].$attributes.createdAt
+      dateGrafico = await findDate[i].$attributes.createdAt.toJSDate()
+      grafico.push({ dateGrafico, valueGrafico })
 
-      grafico = {
-        data: dateGrafico.toJSDate(),
-        valor: valueGrafico
-      }
-      return grafico
     }
+    return response.status(200).json(grafico)
+
   }
 
 }
