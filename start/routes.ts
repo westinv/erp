@@ -40,6 +40,8 @@ Route.group(() =>
 ).middleware('auth:api,apiAccount')
 Route.get('/product/pdv/id', 'ProductsController.indexByPdvId')
 Route.get('/listproduct', 'ProductsController.showlistProducts').middleware('auth:api,apiAccount')
+Route.get('/productchart', 'ProductsController.productChart')
+
 
 //-------------------------Signature------------------------------------------------------------------------
 Route.group(() =>
@@ -77,12 +79,13 @@ Route.group(() =>
 ).middleware('auth:api,apiAccount')
 Route.get('/listrelease/:id', 'ReleasesController.showReleasesByPdvId')
 Route.get('/listrelease', 'ReleasesController.showlistReleases').middleware('auth:api,apiAccount')
-
+Route.get('/releasechart', 'ReleasesController.releasesChart')
 //-------------------------FixexExpenses------------------------------------------------------------------------
 Route.group(() =>
   Route.resource('/fixedexpenses', 'FixedExpensesController').apiOnly()
 )//.middleware('auth:api,apiAccount')
 Route.get('/fixedexpenses/pdv/:id', "FixedExpensesController.showExpensesByPdvId")
+Route.get('costchart', "FixedExpensesController.costChart")
 
 //-------------------------CostHistory------------------------------------------------------------------------
 Route.group(() =>

@@ -1,6 +1,7 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
 import FixedExpense from "App/Models/FixedExpense";
+import { DateTime } from 'luxon';
 
 export default class FixedExpensesController {
 
@@ -73,5 +74,27 @@ export default class FixedExpensesController {
     return listHistory
   }
 
+  public async costChart({ request, response }: HttpContextContract) {
+    const data = request.qs();
+    const pdvId = request.header('pdvId')
+
+    const findDate = await FixedExpense.query().where('pdv_id', `${pdvId}`).whereBetween('created_at', [data.dataInicio, data.dataFim])
+
+
+    var priceGrafico: number
+    var dateGrafico: DateTime
+    var grafico: any[] = []
+
+    for (let i = 0; i < findDate.length; i++) {
+      priceGrafico = await findDate[i].$attributes.price
+      dateGrafico = await findDate[i].$attributes.createdAt.toJSDate()
+      grafico.push({ dateGrafico, priceGrafico })
+
+    }
+
+    return response.status(200).json(grafico)
+
+  }
 
 }
+

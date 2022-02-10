@@ -2,6 +2,7 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Account from 'App/Models/Account';
 import Release from 'App/Models/Release';
 import Salesman from 'App/Models/Salesman';
+import { DateTime } from 'luxon';
 
 export default class ReleasesController {
 
@@ -84,5 +85,27 @@ export default class ReleasesController {
       const pdv = await Release.query().where('account_id', auth.user.id)
       return pdv
     }
+  }
+
+  public async releasesChart({ request, response }: HttpContextContract) {
+    const data = request.qs();
+    const pdvId = request.header('pdvId')
+
+    const findDate = await Release.query().where('pdv_id', `${pdvId}`).whereBetween('created_at', [data.dataInicio, data.dataFim])
+
+
+    var priceGrafico: number
+    var dateGrafico: DateTime
+    var grafico: any[] = []
+
+    for (let i = 0; i < findDate.length; i++) {
+      priceGrafico = await findDate[i].$attributes.price
+      dateGrafico = await findDate[i].$attributes.createdAt.toJSDate()
+      grafico.push({ dateGrafico, priceGrafico })
+    }
+
+
+    return response.status(200).json(grafico)
+
   }
 }

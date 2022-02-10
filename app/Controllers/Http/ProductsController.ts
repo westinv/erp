@@ -1,7 +1,9 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Account from 'App/Models/Account';
 import Product from 'App/Models/Product';
+import Sale from 'App/Models/Sale';
 import Salesman from 'App/Models/Salesman';
+import { DateTime } from 'luxon';
 
 interface IProducts {
   description?: string,
@@ -105,5 +107,30 @@ export default class ProductsController {
     }
   }
 
+  public async productChart({ request, response }: HttpContextContract) {
 
+    const data = request.qs();
+    const pdvId = request.header('pdvId')
+    var findId: number
+    var priceGrafico: number
+    var dateGrafico: DateTime
+    var grafico: any[] = []
+
+
+    //--- achar o id ----//
+    const findproduct = await Product.query().where('pdv_id', `${pdvId}`).where('name', `${data.name}`)
+    findId = findproduct[0].$attributes.id
+
+    const findDate = await Sale.query().where('pdv_id', `${pdvId}`).where('product_id', `${findId}`).whereBetween('created_at', [data.dataInicio, data.dataFim])
+
+    for (let i = 0; i < findDate.length; i++) {
+      priceGrafico = await findDate[i].$attributes.value
+      dateGrafico = await findDate[i].$attributes.createdAt.toJSDate()
+      grafico.push({ dateGrafico, priceGrafico })
+
+    }
+
+    return response.status(200).json(grafico)
+
+  }
 }
